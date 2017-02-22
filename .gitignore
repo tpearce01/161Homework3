@@ -1,10 +1,10 @@
 #For Mac developers
 # Unity generated #
 # =============== #
-TeamCaliban/Temp
-TeamCaliban/obj
-TeamCaliban/Build
-TeamCaliban/Library
+/Temp
+/obj
+/Build
+/Library
 
 /[Ll]ibrary/
 /[Tt]emp/
