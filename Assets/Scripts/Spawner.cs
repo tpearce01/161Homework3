@@ -59,9 +59,28 @@ public class Spawner : MonoBehaviour {
         activeObjects[activeObjects.Count - 1].GetComponent<DefaultProjectile>().speed = speed;
         activeObjects[activeObjects.Count - 1].transform.Rotate(rotation);
     }
+
+	//Spawn object, rotated to face a random player. -transform.right faces the player. transform.right faces away from the player
+	public void SpawnObjectTowardRandomPlayer(Prefab obj, Vector3 location){
+		SpawnObjectTowardRandomPlayer ((int)obj, location);
+	}
+	public void SpawnObjectTowardRandomPlayer(int index, Vector3 location){
+		activeObjects.Add(Instantiate(prefabs[index], location, Quaternion.identity) as GameObject);
+		activeObjects [activeObjects.Count - 1].transform.right = activeObjects [activeObjects.Count - 1].transform.position - GameManager.i.GetPlayers ()[Random.Range(0,2)].transform.position;
+	}
+
+	//Spawn object, rotated to face a random player. transform.right faces the player
+	public void SpawnObjectTowardRandomPlayerTrue(Prefab obj, Vector3 location){
+		SpawnObjectTowardRandomPlayer ((int)obj, location);
+	}
+	public void SpawnObjectTowardRandomPlayerTrue(int index, Vector3 location){
+		activeObjects.Add(Instantiate(prefabs[index], location, Quaternion.identity) as GameObject);
+		activeObjects [activeObjects.Count - 1].transform.right = GameManager.i.GetPlayers ()[Random.Range(0,2)].transform.position - activeObjects [activeObjects.Count - 1].transform.position;
+	}
 }
 	
 //Enum to easily convert prefab names to the appropriate index
 public enum Prefab{
-	Shot1 = 0
+	Shot1 = 0,
+	Shot2 = 1
 };

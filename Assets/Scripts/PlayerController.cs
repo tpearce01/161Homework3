@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     public float TimeBetweenAttacks;    //Time between attacks
     private float attackCooldown;       //Remaining time until the player may attack again
     public Unit stats;                  //Reference to unit script attached to player
+	protected int controllerNumber;		//Controller number associated with this player
 
     void Awake()
     {
@@ -21,6 +22,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         Initialize();
+		GameManager.i.AddPlayer (gameObject);
     }
 
     void Update()
@@ -46,7 +48,8 @@ public class PlayerController : MonoBehaviour
         //Rapid-fire primary attack
         if (attackCooldown <= 0)
         {
-            if (Input.GetKey(KeyCode.Mouse0) || Input.GetKey(KeyCode.Space))
+            if (Input.GetKey(KeyCode.Mouse0) || Input.GetKey(KeyCode.Space)	//Keyboard input	
+				||	Input.GetButton("A" + controllerNumber))					//Controller input
             {
                 //Primary Weapon
                 PrimaryWeapon();
@@ -59,7 +62,8 @@ public class PlayerController : MonoBehaviour
         }
 
         //Single-use Secondary attack
-        if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.Mouse1))
+		if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.Mouse1)	//Keyboard input
+			||	Input.GetButtonDown("B" + controllerNumber))								//Controller input
         {
             //Secondary Weapon
         }
@@ -82,6 +86,7 @@ public class PlayerController : MonoBehaviour
     //Standard attack
     public void AttackType0()
     {
+		//SoundManager.i.PlaySound (Sound.Shot1, 0.5f);
         Spawner.i.SpawnObject(Prefab.Shot1, gameObject.transform.position + Vector3.right + Vector3.up);
         Spawner.i.SpawnObject(Prefab.Shot1, gameObject.transform.position + Vector3.right - Vector3.up);
     }
@@ -110,6 +115,10 @@ public class PlayerController : MonoBehaviour
         
         rigidbody.MovePosition(Vector2.MoveTowards(gameObject.transform.position, finalPos, moveSpeed*Time.deltaTime));
     }
+
+	void OnDestroy(){
+		GameManager.i.RemovePlayer (gameObject);
+	}
 }
 
 //Improve readability for attack types
