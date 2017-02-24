@@ -24,8 +24,18 @@ public abstract class Level : MonoBehaviour
         {
             Spawner.i.SpawnObject(Prefab.Player1, new Vector3(-10, 5, 0));
         }
+
         InitializeLevel();
     }
 
+	void Update(){
+		if (Input.GetKeyDown (KeyCode.Escape)) {
+			Spawner.i.SpawnObject (Prefab.PauseMenu, Vector3.zero);
+		}
+
+		UpdateLevel ();
+	}
+
     public abstract void InitializeLevel();
+	public abstract void UpdateLevel ();
 }

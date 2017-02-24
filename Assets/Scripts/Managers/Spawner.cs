@@ -66,7 +66,7 @@ public class Spawner : MonoBehaviour {
 	}
 	public void SpawnObjectTowardRandomPlayer(int index, Vector3 location){
 		activeObjects.Add(Instantiate(prefabs[index], location, Quaternion.identity) as GameObject);
-		activeObjects [activeObjects.Count - 1].transform.right = activeObjects [activeObjects.Count - 1].transform.position - GameManager.i.GetPlayers ()[Random.Range(0,2)].transform.position;
+		activeObjects [activeObjects.Count - 1].transform.right = activeObjects [activeObjects.Count - 1].transform.position - GameManager.i.GetPlayers ()[Random.Range(0,GameManager.i.GetPlayers().Count)].transform.position;
 	}
 
 	//Spawn object, rotated to face a random player. transform.right faces the player
@@ -75,7 +75,7 @@ public class Spawner : MonoBehaviour {
 	}
 	public void SpawnObjectTowardRandomPlayerTrue(int index, Vector3 location){
 		activeObjects.Add(Instantiate(prefabs[index], location, Quaternion.identity) as GameObject);
-		activeObjects [activeObjects.Count - 1].transform.right = GameManager.i.GetPlayers ()[Random.Range(0,2)].transform.position - activeObjects [activeObjects.Count - 1].transform.position;
+		activeObjects [activeObjects.Count - 1].transform.right = GameManager.i.GetPlayers ()[Random.Range(0,GameManager.i.GetPlayers().Count)].transform.position - activeObjects [activeObjects.Count - 1].transform.position;
 	}
 
 	//Creates an enemy with customized Unit and EnemyBehavior fields. May also customize Sprite
@@ -109,6 +109,9 @@ public class Spawner : MonoBehaviour {
 	public void SpawnBasicEnemy(Vector3 location, EnemyAttackType at){
 		SpawnCustomEnemy (location, 100, at, 2, 2, 10);
 	}
+	public void SpawnBasicEnemy(Vector3 location, int at){
+		SpawnCustomEnemy (location, 100, (EnemyAttackType)at, 2, 2, 10);
+	}
 	public void SpawnSpiralEnemy(Vector3 location){
 		SpawnCustomEnemy (location, 100, EnemyAttackType.Spiral, 0.05f, 1, 10);
 	}
@@ -120,5 +123,7 @@ public enum Prefab{
 	Shot2 = 1,
 	Enemy = 2,
     Player1 = 3,
-    Player2 = 4
+    Player2 = 4,
+	PauseMenu = 5,
+	VictoryMenu = 6
 };

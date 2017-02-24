@@ -6,6 +6,12 @@ public class MainMenuManager : MonoBehaviour {
 
 	public GameObject loadPanel;
 
+	void Update(){
+		if (Input.GetButtonDown ("Start1") || Input.GetButtonDown ("Start2") || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return)) {
+			LoadScene ("ready_scene");
+		}
+	}
+
 	public void QuitButton(){
 		Application.Quit();
 	}
