@@ -8,7 +8,7 @@ public class EnemyProjectile : Projectile
     //Move bullet
     protected override void Move()
     {
-        gameObject.transform.position -= transform.right;
+		gameObject.transform.position -= transform.right * speed * Time.deltaTime;
     }
 
     //Damage enemies on collision

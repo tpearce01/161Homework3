@@ -20,6 +20,10 @@ public class Unit : MonoBehaviour
     public void ModifyHealth(float value)
     {
         health += value;
+		if (health >= maxHealth) {
+			health = maxHealth;
+		}
+
         healthSlider.value = health/maxHealth;
 
         //Color-Based health feedback

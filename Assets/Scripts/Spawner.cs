@@ -77,10 +77,46 @@ public class Spawner : MonoBehaviour {
 		activeObjects.Add(Instantiate(prefabs[index], location, Quaternion.identity) as GameObject);
 		activeObjects [activeObjects.Count - 1].transform.right = GameManager.i.GetPlayers ()[Random.Range(0,2)].transform.position - activeObjects [activeObjects.Count - 1].transform.position;
 	}
+
+	//Creates an enemy with customized Unit and EnemyBehavior fields. May also customize Sprite
+	public void SpawnCustomEnemy(Vector3 location, int maxHealth, EnemyAttackType attackType, float timeBetweenAttacks, float attackCooldown, int speed){
+		GameObject spawned;
+		activeObjects.Add(Instantiate(prefabs[(int)Prefab.Enemy], location, Quaternion.identity) as GameObject);
+		spawned = activeObjects [activeObjects.Count - 1];
+		spawned.GetComponent<Unit> ().maxHealth = maxHealth;
+		spawned.GetComponent<Unit> ().ModifyHealth (maxHealth);
+		spawned.GetComponent<EnemyBehavior> ().attackType = attackType;
+		spawned.GetComponent<EnemyBehavior> ().timeBetweenAttacks = timeBetweenAttacks;
+		spawned.GetComponent<EnemyBehavior> ().attackCooldown = attackCooldown;
+		spawned.GetComponent<EnemyBehavior> ().speed = speed;
+	}
+	public void SpawnCustomEnemy(Vector3 location, int maxHealth, EnemyAttackType attackType, float timeBetweenAttacks, float attackCooldown, int speed, Sprite sprite){
+		GameObject spawned;
+		activeObjects.Add(Instantiate(prefabs[(int)Prefab.Enemy], location, Quaternion.identity) as GameObject);
+		spawned = activeObjects [activeObjects.Count - 1];
+		spawned.GetComponent<Unit> ().maxHealth = maxHealth;
+		spawned.GetComponent<Unit> ().ModifyHealth (maxHealth);
+		spawned.GetComponent<EnemyBehavior> ().attackType = attackType;
+		spawned.GetComponent<EnemyBehavior> ().timeBetweenAttacks = timeBetweenAttacks;
+		spawned.GetComponent<EnemyBehavior> ().attackCooldown = attackCooldown;
+		spawned.GetComponent<EnemyBehavior> ().speed = speed;
+		spawned.GetComponent<SpriteRenderer> ().sprite = sprite;
+	}
+
+	/*
+	 * Sample of custom enemy spawns for easy testing
+	 */ 
+	public void SpawnBasicEnemy(Vector3 location, EnemyAttackType at){
+		SpawnCustomEnemy (location, 100, at, 2, 2, 10);
+	}
+	public void SpawnSpiralEnemy(Vector3 location){
+		SpawnCustomEnemy (location, 100, EnemyAttackType.Spiral, 0.05f, 1, 10);
+	}
 }
 	
 //Enum to easily convert prefab names to the appropriate index
 public enum Prefab{
 	Shot1 = 0,
-	Shot2 = 1
+	Shot2 = 1,
+	Enemy = 2
 };
