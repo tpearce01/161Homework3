@@ -118,5 +118,7 @@ public class Spawner : MonoBehaviour {
 public enum Prefab{
 	Shot1 = 0,
 	Shot2 = 1,
-	Enemy = 2
+	Enemy = 2,
+    Player1 = 3,
+    Player2 = 4
 };

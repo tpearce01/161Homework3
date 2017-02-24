@@ -51,7 +51,6 @@ public class Parallax : MonoBehaviour {
 
 	void MoveSprites(){
 		for (int i = 0; i < backgrounds.Count; i++) {
-            Debug.Log(minSpeed + (5 - i % 6) * maxSpeed);
 			backgrounds [i].transform.position -= transform.right * (minSpeed + (5-i%6)*maxSpeed*maxSpeed) * Time.deltaTime;
 		}
 	}

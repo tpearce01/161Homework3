@@ -14,7 +14,6 @@ public class ParallaxRespawn : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D other){
-		Debug.Log ("Trigger: " + other.gameObject.name);
 		if(other.gameObject.CompareTag("Background")){
 			other.transform.position += Vector3.right * Parallax.i.spriteWidth * 2;
         }

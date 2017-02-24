@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -13,6 +12,7 @@ public class PlayerController : MonoBehaviour
     private float attackCooldown;       //Remaining time until the player may attack again
     public Unit stats;                  //Reference to unit script attached to player
 	protected int controllerNumber;		//Controller number associated with this player
+    private Vector3 finalPos;           //Final position to move player to
 
     void Awake()
     {
@@ -94,31 +94,59 @@ public class PlayerController : MonoBehaviour
     //Get player input and move player is applicable
     public void MovePlayer()
     {
-        Vector3 finalPos = gameObject.transform.position;
-
-        if (Input.GetKey(KeyCode.W))
+        finalPos = gameObject.transform.position;
+        ControllerInput();
+        if (finalPos == gameObject.transform.position)
         {
-            finalPos += transform.up;
+            KeyboardInput();
         }
-        if (Input.GetKey(KeyCode.A))
-        {
-            finalPos -= transform.right;
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            finalPos -= transform.up;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            finalPos += transform.right;
-        }
-        
         rigidbody.MovePosition(Vector2.MoveTowards(gameObject.transform.position, finalPos, moveSpeed*Time.deltaTime));
     }
 
 	void OnDestroy(){
 		GameManager.i.RemovePlayer (gameObject);
 	}
+
+    void KeyboardInput()
+    {
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+        {
+            finalPos += transform.up;
+        }
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+        {
+            finalPos -= transform.right;
+        }
+        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+        {
+            finalPos -= transform.up;
+        }
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        {
+            finalPos += transform.right;
+        }
+    }
+
+    void ControllerInput()
+    {
+        Vector2 ls = new Vector2(Input.GetAxis("LSX" + controllerNumber), Input.GetAxis("LSY" + controllerNumber));
+        if (ls.y > .2f)
+        {
+            finalPos -= transform.up;
+        }
+        if (ls.y < -.2f)
+        {
+            finalPos += transform.up;
+        }
+        if (ls.x < -.2f)
+        {
+            finalPos -= transform.right;
+        }
+        if (ls.x > .2f)
+        {
+            finalPos += transform.right;
+        }
+    }
 }
 
 //Improve readability for attack types
