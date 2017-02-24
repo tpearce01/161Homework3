@@ -8,17 +8,15 @@ public class ParallaxRespawn : MonoBehaviour {
 		gameObject.transform.position -= transform.right * Parallax.i.spriteWidth;
 	}
 
-	void OnCollisionEnter2D(Collision2D other){
-		Debug.Log ("Collision: " + other.gameObject.name);
-		if(other.gameObject.CompareTag("Background")){
-			other.transform.position += Vector3.right * Parallax.i.spriteWidth;
-		}
+	void OnCollisionEnter2D(Collision2D other)
+	{
+	    Destroy(other.gameObject);
 	}
 
 	void OnTriggerEnter2D(Collider2D other){
 		Debug.Log ("Trigger: " + other.gameObject.name);
 		if(other.gameObject.CompareTag("Background")){
 			other.transform.position += Vector3.right * Parallax.i.spriteWidth * 2;
-		}
+        }
 	}
 }

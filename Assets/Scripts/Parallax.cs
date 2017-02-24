@@ -8,7 +8,7 @@ public class Parallax : MonoBehaviour {
 
 	public Sprite[] sources;
 	List<GameObject> backgrounds = new List<GameObject>();
-	List<float> originalPosition = new List<float>();
+	public Vector3 originalPosition;
 	public float spriteWidth;
 	public int minSpeed;
 	public int maxSpeed;
@@ -21,7 +21,7 @@ public class Parallax : MonoBehaviour {
 		CreateSprites ();
 	}
 
-	void Update(){
+	void FixedUpdate(){
 		MoveSprites ();
 	}
 
@@ -33,7 +33,7 @@ public class Parallax : MonoBehaviour {
 			backgrounds [i].GetComponent<BoxCollider2D> ().isTrigger = true;
 			backgrounds [i].GetComponent<SpriteRenderer> ().sprite = sources [i];
 			backgrounds [i].transform.position = new Vector3 (0, 0, 1 + (i/10f));
-			backgrounds [i].transform.localScale = new Vector3 (2, 1, 1);
+			backgrounds [i].transform.localScale = new Vector3 (2, 0.8f, 1);
 			backgrounds [i].tag = "Background";
 		}
 		for (int i = 0; i < sources.Length; i++) {
@@ -43,7 +43,7 @@ public class Parallax : MonoBehaviour {
 			backgrounds [i + sources.Length].GetComponent<BoxCollider2D> ().isTrigger = true;
 			backgrounds [i + sources.Length].GetComponent<SpriteRenderer> ().sprite = sources [i];
 			backgrounds [i + sources.Length].transform.position = new Vector3 (spriteWidth, 0, 1 + (i/10f));
-			backgrounds [i + sources.Length].transform.localScale = new Vector3 (2, 1, 1);
+			backgrounds [i + sources.Length].transform.localScale = new Vector3 (2, 0.8f, 1);
 			backgrounds [i + sources.Length].tag = "Background";
 			backgrounds [i + sources.Length].transform.rotation = new Quaternion(0,180,0, 0);
 		}
@@ -51,7 +51,8 @@ public class Parallax : MonoBehaviour {
 
 	void MoveSprites(){
 		for (int i = 0; i < backgrounds.Count; i++) {
-			backgrounds [i].transform.position -= transform.right * Mathf.Lerp(minSpeed, maxSpeed, (float)(6 - i%6) / backgrounds.Count) * Time.deltaTime;
+            Debug.Log(minSpeed + (5 - i % 6) * maxSpeed);
+			backgrounds [i].transform.position -= transform.right * (minSpeed + (5-i%6)*maxSpeed*maxSpeed) * Time.deltaTime;
 		}
 	}
 }
