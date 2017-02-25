@@ -125,5 +125,6 @@ public enum Prefab{
     Player1 = 3,
     Player2 = 4,
 	PauseMenu = 5,
-	VictoryMenu = 6
+	VictoryMenu = 6,
+	FusedPlayer = 7
 };

@@ -8,7 +8,8 @@ public class Unit : MonoBehaviour
     public Slider healthSlider;
     public Image healthSliderFill;
     public float maxHealth;
-    private float health;
+	public float health;
+	public float damageModifier = 1;
 
     void Start()
     {
@@ -19,7 +20,7 @@ public class Unit : MonoBehaviour
     //Modify unit health and update slider value / color
     public void ModifyHealth(float value)
     {
-        health += value;
+        health += value * damageModifier;
 		if (health >= maxHealth) {
 			health = maxHealth;
 		}

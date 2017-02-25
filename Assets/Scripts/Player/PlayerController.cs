@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     public Unit stats;                  //Reference to unit script attached to player
 	protected int controllerNumber;		//Controller number associated with this player
     private Vector3 finalPos;           //Final position to move player to
+	public bool readyToFuse;
 
     void Awake()
     {
@@ -28,6 +29,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         Shoot();
+		Fusion ();
     }
 
     void FixedUpdate()
@@ -41,6 +43,15 @@ public class PlayerController : MonoBehaviour
         rigidbody = gameObject.GetComponent<Rigidbody2D>();
         at = AttackType.Standard;
     }
+
+	void Fusion(){
+		if(Input.GetButtonDown("Y" + controllerNumber)){
+			readyToFuse = true;
+		}
+		if (Input.GetButtonUp ("Y" + controllerNumber)) {
+			readyToFuse = false;
+		}
+	}
 
     //Shoot
     public void Shoot()
