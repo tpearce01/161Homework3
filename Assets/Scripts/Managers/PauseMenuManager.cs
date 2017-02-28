@@ -7,6 +7,9 @@ public class PauseMenuManager : MonoBehaviour {
 
 	void Awake(){
 		Time.timeScale = 0;
+		if (ScreenShake.i != null) {
+			ScreenShake.i.EndShake ();
+		}
 	}
 
 	public void Resume(){
