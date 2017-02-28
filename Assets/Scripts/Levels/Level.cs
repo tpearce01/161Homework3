@@ -52,39 +52,48 @@ public abstract class Level : MonoBehaviour
     }
 
     void CheckFusion(){
-	    bool canFuse = true;
-	    for (int i = 0; i < GameManager.i.GetPlayers().Count; i++)
-	    {
-	        if (!GameManager.i.GetPlayers()[i].GetComponent<PlayerController>().readyToFuse)
-	        {
-	            canFuse = false;
-	            break;
-	        }
-	    }
+        if (GameManager.i.GetPlayers().Count > 1)
+        {
+            bool canFuse = true;
+            for (int i = 0; i < GameManager.i.GetPlayers().Count; i++)
+            {
+                if (!GameManager.i.GetPlayers()[i].GetComponent<PlayerController>().readyToFuse)
+                {
+                    canFuse = false;
+                    break;
+                }
+            }
 
-	    if (canFuse)
-	    {
-	        //Check the distance between the players
-	        Vector2 originalPosition = GameManager.i.GetPlayers()[0].transform.position;
-	        bool initiateFusion = true;
-	        for (int i = 1; i < GameManager.i.GetPlayers().Count; i++)
-	        {
-	            if (Vector2.Distance(originalPosition, GameManager.i.GetPlayers()[i].transform.position) > 2)
-	            {
-	                initiateFusion = false;
-	                break;
-	            }
-	        }
-	        if (initiateFusion)
-	        {
-	            for (int i = 0; i < GameManager.i.GetPlayers().Count; i++)
-	            {
-	                GameManager.i.GetPlayers()[i].GetComponent<PlayerController>().readyToFuse = false;
-	            }
-	            Fuse();
-	        }
-	    }
-	}
+
+            if (canFuse)
+            {
+                Vector2 originalPosition = Vector2.zero;
+                //Check the distance between the players
+                if (GameManager.i.GetPlayers().Count > 0)
+                {
+                    originalPosition = GameManager.i.GetPlayers()[0].transform.position;
+                }
+
+                bool initiateFusion = true;
+                for (int i = 1; i < GameManager.i.GetPlayers().Count; i++)
+                {
+                    if (Vector2.Distance(originalPosition, GameManager.i.GetPlayers()[i].transform.position) > 2)
+                    {
+                        initiateFusion = false;
+                        break;
+                    }
+                }
+                if (initiateFusion)
+                {
+                    for (int i = 0; i < GameManager.i.GetPlayers().Count; i++)
+                    {
+                        GameManager.i.GetPlayers()[i].GetComponent<PlayerController>().readyToFuse = false;
+                    }
+                    Fuse();
+                }
+            }
+        }
+    }
 
 	void Fuse(){
 		//Instantiate fused ship at player 1 location

@@ -9,7 +9,7 @@ public class Spawner : MonoBehaviour {
 	public GameObject[] prefabs;								//List of all prefabs that may be instantiated
 	List<GameObject> activeObjects = new List<GameObject>();	//All active objects controlled by this script
 
-	void Start(){
+	void Awake(){
 		i = this;
 	}
 
@@ -79,7 +79,7 @@ public class Spawner : MonoBehaviour {
 	}
 
 	//Creates an enemy with customized Unit and EnemyBehavior fields. May also customize Sprite
-	public void SpawnCustomEnemy(Vector3 location, int maxHealth, EnemyAttackType attackType, float timeBetweenAttacks, float attackCooldown, int speed){
+	public GameObject SpawnCustomEnemy(Vector3 location, int maxHealth, EnemyAttackType attackType, float timeBetweenAttacks, float attackCooldown, int speed){
 		GameObject spawned;
 		activeObjects.Add(Instantiate(prefabs[(int)Prefab.Enemy], location, Quaternion.identity) as GameObject);
 		spawned = activeObjects [activeObjects.Count - 1];
@@ -89,8 +89,9 @@ public class Spawner : MonoBehaviour {
 		spawned.GetComponent<EnemyBehavior> ().timeBetweenAttacks = timeBetweenAttacks;
 		spawned.GetComponent<EnemyBehavior> ().attackCooldown = attackCooldown;
 		spawned.GetComponent<EnemyBehavior> ().speed = speed;
+	    return spawned;
 	}
-	public void SpawnCustomEnemy(Vector3 location, int maxHealth, EnemyAttackType attackType, float timeBetweenAttacks, float attackCooldown, int speed, Sprite sprite){
+	public GameObject SpawnCustomEnemy(Vector3 location, int maxHealth, EnemyAttackType attackType, float timeBetweenAttacks, float attackCooldown, int speed, Sprite sprite){
 		GameObject spawned;
 		activeObjects.Add(Instantiate(prefabs[(int)Prefab.Enemy], location, Quaternion.identity) as GameObject);
 		spawned = activeObjects [activeObjects.Count - 1];
@@ -101,19 +102,28 @@ public class Spawner : MonoBehaviour {
 		spawned.GetComponent<EnemyBehavior> ().attackCooldown = attackCooldown;
 		spawned.GetComponent<EnemyBehavior> ().speed = speed;
 		spawned.GetComponent<SpriteRenderer> ().sprite = sprite;
+	    return spawned;
 	}
+
+    public GameObject SpawnBossComponent(Vector3 location, int maxHealth, EnemyAttackType attackType, float timeBetweenAttacks, float attackCooldown, int speed)
+    {
+        GameObject spawned = SpawnCustomEnemy(location, maxHealth, attackType, timeBetweenAttacks, attackCooldown, speed);
+        spawned.GetComponent<SpriteRenderer>().enabled = false;
+        spawned.GetComponentInChildren<SpriteRenderer>().enabled = false;
+        return spawned;
+    }
 
 	/*
 	 * Sample of custom enemy spawns for easy testing
 	 */ 
-	public void SpawnBasicEnemy(Vector3 location, EnemyAttackType at){
-		SpawnCustomEnemy (location, 100, at, 2, 2, 10);
+	public GameObject SpawnBasicEnemy(Vector3 location, EnemyAttackType at){
+		return SpawnCustomEnemy (location, 100, at, 2, 2, 10);
 	}
-	public void SpawnBasicEnemy(Vector3 location, int at){
-		SpawnCustomEnemy (location, 100, (EnemyAttackType)at, 2, 2, 10);
+	public GameObject SpawnBasicEnemy(Vector3 location, int at){
+		return SpawnCustomEnemy (location, 100, (EnemyAttackType)at, 2, 2, 10);
 	}
-	public void SpawnSpiralEnemy(Vector3 location){
-		SpawnCustomEnemy (location, 100, EnemyAttackType.Spiral, 0.05f, 1, 10);
+	public GameObject SpawnSpiralEnemy(Vector3 location){
+		return SpawnCustomEnemy (location, 100, EnemyAttackType.Spiral, 0.05f, 1, 10);
 	}
 }
 	
