@@ -3,17 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Unit : MonoBehaviour
+public class Turret : MonoBehaviour
 {
     public Slider healthSlider;
     public Image healthSliderFill;
     public float maxHealth;
 	public float health;
 	public float damageModifier = 1;
+    private GameObject bossHealth;
+    public float damangeToBoss;
 
+
+    void Awake()
+    {
+        bossHealth = GameObject.FindGameObjectWithTag("BossHealth");
+    }
     void Start()
     {
-
         health = maxHealth;
         ModifyHealth(0);
     }
@@ -41,6 +47,7 @@ public class Unit : MonoBehaviour
         //If dead, kill the unit
         if (health <= 0)
         {
+            bossHealth.GetComponent<BossHealth>().modifyBossHealth(damangeToBoss);
             Kill();
         }
     }
@@ -50,6 +57,8 @@ public class Unit : MonoBehaviour
     {
         //Spawner.i.SpawnObject(Prefab.Explosion0, gameObject.transform.position);
         //SoundManager.i.PlaySound(Sound.Explosion0, 0.5f);
+        print("hurt boss");
+        bossHealth.GetComponent<BossHealth>().modifyBossHealth(-damangeToBoss);
         Destroy(gameObject);
     }
 }

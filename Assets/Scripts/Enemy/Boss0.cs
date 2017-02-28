@@ -5,13 +5,23 @@ using UnityEngine;
 public class Boss0 : MonoBehaviour
 {
 
+    private float bossHealth;
+    private float bossMaxHealth;
     public int speed;
     private int phase;
+
+
+    void Awake()
+    {
+        bossMaxHealth = GameObject.FindGameObjectWithTag("BossHealth").GetComponent<BossHealth>().bossHealthMax;
+        bossHealth = GameObject.FindGameObjectWithTag("BossHealth").GetComponent<BossHealth>().bossHealthCurrent;
+    }
 
 	// Use this for initialization
 	void Start ()
 	{
-	}
+
+    }
 	
 	// Update is called once per frame
 	void Update ()
@@ -47,7 +57,7 @@ public class Boss0 : MonoBehaviour
 
     void CheckPhase()
     {
-        if (gameObject.GetComponentsInChildren<Unit>().Length == 0)
+        if ( Mathf.Approximately(bossHealth , bossMaxHealth /.5f))
         {
             phase = 1;
         }
@@ -72,10 +82,12 @@ public class Boss0 : MonoBehaviour
 
     void CheckDestroy()
     {
-        if (GameObject.FindGameObjectsWithTag("Enemy").Length <= 1)
+        if ( Mathf.Approximately(0f, bossHealth ))
         {
             Spawner.i.SpawnObject(Prefab.VictoryMenu, Vector3.zero);
             Destroy(gameObject);
         }
     }
+
+
 }

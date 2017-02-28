@@ -20,5 +20,14 @@ public class DefaultProjectile : Projectile
             other.gameObject.GetComponent<Unit>().ModifyHealth(-damage);
             Destroy(gameObject);
         }
+
+        if (other.gameObject.CompareTag("Turret"))
+        {
+            //SoundManager.i.PlaySound(Sound.EnemyHit, 0.5f);
+            //Spawner.i.SpawnObject(Prefab.Hit0, 0.5f);
+            other.gameObject.GetComponent<Turret>().ModifyHealth(-damage);
+            Destroy(gameObject);
+        }
+
     }
 }
