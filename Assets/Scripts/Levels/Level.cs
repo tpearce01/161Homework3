@@ -55,9 +55,10 @@ public abstract class Level : MonoBehaviour
         if (GameManager.i.GetPlayers().Count > 1)
         {
             bool canFuse = true;
+			List<GameObject> players = GameManager.i.GetPlayers ();
             for (int i = 0; i < GameManager.i.GetPlayers().Count; i++)
             {
-                if (!GameManager.i.GetPlayers()[i].GetComponent<PlayerController>().readyToFuse)
+				if (!players[i].GetComponent<PlayerController>().readyToFuse)
                 {
                     canFuse = false;
                     break;
@@ -69,15 +70,15 @@ public abstract class Level : MonoBehaviour
             {
                 Vector2 originalPosition = Vector2.zero;
                 //Check the distance between the players
-                if (GameManager.i.GetPlayers().Count > 0)
+				if (players.Count > 0)
                 {
-                    originalPosition = GameManager.i.GetPlayers()[0].transform.position;
+					originalPosition = players[0].transform.position;
                 }
 
                 bool initiateFusion = true;
-                for (int i = 1; i < GameManager.i.GetPlayers().Count; i++)
+				for (int i = 1; i < players.Count; i++)
                 {
-                    if (Vector2.Distance(originalPosition, GameManager.i.GetPlayers()[i].transform.position) > 2)
+					if (Vector2.Distance(originalPosition, players[i].transform.position) > 2)
                     {
                         initiateFusion = false;
                         break;
@@ -85,9 +86,9 @@ public abstract class Level : MonoBehaviour
                 }
                 if (initiateFusion)
                 {
-                    for (int i = 0; i < GameManager.i.GetPlayers().Count; i++)
+					for (int i = 0; i < players.Count; i++)
                     {
-                        GameManager.i.GetPlayers()[i].GetComponent<PlayerController>().readyToFuse = false;
+						players[i].GetComponent<PlayerController>().readyToFuse = false;
                     }
                     Fuse();
                 }
@@ -99,16 +100,18 @@ public abstract class Level : MonoBehaviour
 		//Instantiate fused ship at player 1 location
 		Spawner.i.SpawnObject (Prefab.FusedPlayer, GameManager.i.GetPlayers () [0].transform.position);
 
+		List<GameObject> players = GameManager.i.GetPlayers ();
+			
         //Calculate health
         float totalHealth = 0;	//Total health of all players except fused player
-		for (int i = 0; i < GameManager.i.GetPlayers ().Count - 1; i++) {
-			totalHealth += GameManager.i.GetPlayers () [i].GetComponent<Unit> ().health;
+		for (int i = 0; i < players.Count - 1; i++) {
+			totalHealth += players[i].GetComponent<Unit> ().health;
 		}
-		GameManager.i.GetPlayers()[GameManager.i.GetPlayers().Count-1].GetComponent<Unit>().health = totalHealth/GameManager.i.GetPlayers().Count;
+		players[players.Count-1].GetComponent<Unit>().health = totalHealth/players.Count;
 
 		//Remove players
-		for (int i = GameManager.i.GetPlayers ().Count - 1; i >= 0; i--) {
-			storedPlayerHealth.Add (GameManager.i.GetPlayers () [i].GetComponent<Unit> ().health);
+		for (int i = players.Count - 1; i >= 0; i--) {
+			storedPlayerHealth.Add (players[i].GetComponent<Unit> ().health);
 		    GameObject toDestroy = GameManager.i.GetPlayers()[i];
 			GameManager.i.RemovePlayer (GameManager.i.GetPlayers () [i]);
 		    Destroy(toDestroy);
@@ -118,13 +121,14 @@ public abstract class Level : MonoBehaviour
 	}
 
 	void Unfuse(){
+		List<GameObject> players = GameManager.i.GetPlayers ();
 		//Instantiate player1, player2
-		Spawner.i.SpawnObject(Prefab.Player1, GameManager.i.GetPlayers()[0].transform.position + transform.up);
-		Spawner.i.SpawnObject(Prefab.Player2, GameManager.i.GetPlayers()[0].transform.position - transform.up);
+		Spawner.i.SpawnObject(Prefab.Player1, players[0].transform.position + transform.up);
+		Spawner.i.SpawnObject(Prefab.Player2, players[0].transform.position - transform.up);
 
 		//Calculate health
-		for (int i = 1; i < GameManager.i.GetPlayers ().Count; i++) {
-			GameManager.i.GetPlayers () [i].GetComponent<Unit> ().health = GameManager.i.GetPlayers () [0].GetComponent<Unit> ().health;
+		for (int i = 1; i < players.Count; i++) {
+			players[i].GetComponent<Unit> ().health = players[0].GetComponent<Unit> ().health;
 		}
 
 		//Remove fused ship

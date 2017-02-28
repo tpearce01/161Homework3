@@ -7,20 +7,15 @@ public class Spawner : MonoBehaviour {
 	public static Spawner i;								    //Static reference
 
 	public GameObject[] prefabs;								//List of all prefabs that may be instantiated
-	List<GameObject> activeObjects = new List<GameObject>();	//All active objects controlled by this script
+	GameObject activeObject;
 
 	void Awake(){
 		i = this;
 	}
 
-	void Update(){
-		//Remove any objects that have been deleted
-		activeObjects.RemoveAll(item => item == null);
-	}
-
 	//Instantiate an object at the specified location and add it to the list of active objects
 	public void SpawnObject(int index, Vector3 location){
-		activeObjects.Add(Instantiate (prefabs [index], location, Quaternion.identity) as GameObject);
+		activeObject = Instantiate (prefabs [index], location, Quaternion.identity) as GameObject;
 	}
 	public void SpawnObject(Prefab obj, Vector3 location){
 		SpawnObject((int)obj, location);
@@ -29,8 +24,8 @@ public class Spawner : MonoBehaviour {
     //Instantiate an object at position with rotation
     public void SpawnObjectWithRotation(int index, Vector3 location, Vector3 rotation)
     {
-        activeObjects.Add(Instantiate(prefabs[index], location, Quaternion.identity) as GameObject);
-        activeObjects[activeObjects.Count - 1].transform.Rotate(rotation);
+		activeObject = Instantiate(prefabs[index], location, Quaternion.identity) as GameObject;
+        activeObject.transform.Rotate(rotation);
     }
     public void SpawnObjectWithRotation(Prefab obj, Vector3 location, Vector3 rotation)
     {
@@ -44,8 +39,8 @@ public class Spawner : MonoBehaviour {
     }
     public void SpawnModifiedBullet(int index, Vector3 location, int speed)
     {
-        activeObjects.Add(Instantiate(prefabs[index], location, Quaternion.identity) as GameObject);
-        activeObjects[activeObjects.Count - 1].GetComponent<DefaultProjectile>().speed = speed;
+		activeObject = Instantiate(prefabs[index], location, Quaternion.identity) as GameObject;
+        activeObject.GetComponent<DefaultProjectile>().speed = speed;
     }
 
     //Spawn a rotated bullet with modified speed
@@ -55,9 +50,9 @@ public class Spawner : MonoBehaviour {
     }
     public void SpawnModifiedBulletRotated(int index, Vector3 location, int speed, Vector3 rotation)
     {
-        activeObjects.Add(Instantiate(prefabs[index], location, Quaternion.identity) as GameObject);
-        activeObjects[activeObjects.Count - 1].GetComponent<DefaultProjectile>().speed = speed;
-        activeObjects[activeObjects.Count - 1].transform.Rotate(rotation);
+		activeObject = Instantiate(prefabs[index], location, Quaternion.identity) as GameObject;
+        activeObject.GetComponent<DefaultProjectile>().speed = speed;
+        activeObject.transform.Rotate(rotation);
     }
 
 	//Spawn object, rotated to face a random player. -transform.right faces the player. transform.right faces away from the player
@@ -65,8 +60,8 @@ public class Spawner : MonoBehaviour {
 		SpawnObjectTowardRandomPlayer ((int)obj, location);
 	}
 	public void SpawnObjectTowardRandomPlayer(int index, Vector3 location){
-		activeObjects.Add(Instantiate(prefabs[index], location, Quaternion.identity) as GameObject);
-		activeObjects [activeObjects.Count - 1].transform.right = activeObjects [activeObjects.Count - 1].transform.position - GameManager.i.GetPlayers ()[Random.Range(0,GameManager.i.GetPlayers().Count)].transform.position;
+		activeObject = Instantiate(prefabs[index], location, Quaternion.identity) as GameObject;
+		activeObject.transform.right = activeObject.transform.position - GameManager.i.GetPlayers ()[Random.Range(0,GameManager.i.GetPlayers().Count)].transform.position;
 	}
 
 	//Spawn object, rotated to face a random player. transform.right faces the player
@@ -74,43 +69,39 @@ public class Spawner : MonoBehaviour {
 		SpawnObjectTowardRandomPlayer ((int)obj, location);
 	}
 	public void SpawnObjectTowardRandomPlayerTrue(int index, Vector3 location){
-		activeObjects.Add(Instantiate(prefabs[index], location, Quaternion.identity) as GameObject);
-		activeObjects [activeObjects.Count - 1].transform.right = GameManager.i.GetPlayers ()[Random.Range(0,GameManager.i.GetPlayers().Count)].transform.position - activeObjects [activeObjects.Count - 1].transform.position;
+		activeObject = Instantiate(prefabs[index], location, Quaternion.identity) as GameObject;
+		activeObject.transform.right = GameManager.i.GetPlayers ()[Random.Range(0,GameManager.i.GetPlayers().Count)].transform.position - activeObject.transform.position;
 	}
 
 	//Creates an enemy with customized Unit and EnemyBehavior fields. May also customize Sprite
 	public GameObject SpawnCustomEnemy(Vector3 location, int maxHealth, EnemyAttackType attackType, float timeBetweenAttacks, float attackCooldown, int speed){
-		GameObject spawned;
-		activeObjects.Add(Instantiate(prefabs[(int)Prefab.Enemy], location, Quaternion.identity) as GameObject);
-		spawned = activeObjects [activeObjects.Count - 1];
-		spawned.GetComponent<Unit> ().maxHealth = maxHealth;
-		spawned.GetComponent<Unit> ().ModifyHealth (maxHealth);
-		spawned.GetComponent<EnemyBehavior> ().attackType = attackType;
-		spawned.GetComponent<EnemyBehavior> ().timeBetweenAttacks = timeBetweenAttacks;
-		spawned.GetComponent<EnemyBehavior> ().attackCooldown = attackCooldown;
-		spawned.GetComponent<EnemyBehavior> ().speed = speed;
-	    return spawned;
+		activeObject = Instantiate(prefabs[(int)Prefab.Enemy], location, Quaternion.identity) as GameObject;
+		activeObject.GetComponent<Unit> ().maxHealth = maxHealth;
+		activeObject.GetComponent<Unit> ().ModifyHealth (maxHealth);
+		activeObject.GetComponent<EnemyBehavior> ().attackType = attackType;
+		activeObject.GetComponent<EnemyBehavior> ().timeBetweenAttacks = timeBetweenAttacks;
+		activeObject.GetComponent<EnemyBehavior> ().attackCooldown = attackCooldown;
+		activeObject.GetComponent<EnemyBehavior> ().speed = speed;
+		return activeObject;
 	}
 	public GameObject SpawnCustomEnemy(Vector3 location, int maxHealth, EnemyAttackType attackType, float timeBetweenAttacks, float attackCooldown, int speed, Sprite sprite){
-		GameObject spawned;
-		activeObjects.Add(Instantiate(prefabs[(int)Prefab.Enemy], location, Quaternion.identity) as GameObject);
-		spawned = activeObjects [activeObjects.Count - 1];
-		spawned.GetComponent<Unit> ().maxHealth = maxHealth;
-		spawned.GetComponent<Unit> ().ModifyHealth (maxHealth);
-		spawned.GetComponent<EnemyBehavior> ().attackType = attackType;
-		spawned.GetComponent<EnemyBehavior> ().timeBetweenAttacks = timeBetweenAttacks;
-		spawned.GetComponent<EnemyBehavior> ().attackCooldown = attackCooldown;
-		spawned.GetComponent<EnemyBehavior> ().speed = speed;
-		spawned.GetComponent<SpriteRenderer> ().sprite = sprite;
-	    return spawned;
+		activeObject = Instantiate(prefabs[(int)Prefab.Enemy], location, Quaternion.identity) as GameObject;
+		activeObject.GetComponent<Unit> ().maxHealth = maxHealth;
+		activeObject.GetComponent<Unit> ().ModifyHealth (maxHealth);
+		activeObject.GetComponent<EnemyBehavior> ().attackType = attackType;
+		activeObject.GetComponent<EnemyBehavior> ().timeBetweenAttacks = timeBetweenAttacks;
+		activeObject.GetComponent<EnemyBehavior> ().attackCooldown = attackCooldown;
+		activeObject.GetComponent<EnemyBehavior> ().speed = speed;
+		activeObject.GetComponent<SpriteRenderer> ().sprite = sprite;
+		return activeObject;
 	}
 
     public GameObject SpawnBossComponent(Vector3 location, int maxHealth, EnemyAttackType attackType, float timeBetweenAttacks, float attackCooldown, int speed)
     {
-        GameObject spawned = SpawnCustomEnemy(location, maxHealth, attackType, timeBetweenAttacks, attackCooldown, speed);
-        spawned.GetComponent<SpriteRenderer>().enabled = false;
-        spawned.GetComponentsInChildren<SpriteRenderer>()[1].enabled = false;
-        return spawned;
+        activeObject = SpawnCustomEnemy(location, maxHealth, attackType, timeBetweenAttacks, attackCooldown, speed);
+		activeObject.GetComponent<SpriteRenderer>().enabled = false;
+		activeObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = false;
+		return activeObject;
     }
 
 	/*
