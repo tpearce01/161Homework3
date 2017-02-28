@@ -59,6 +59,12 @@ public class EnemyBehavior : MonoBehaviour
 			case 6:
 				Spiral ();
 				break;
+            case 7:
+                CircleDynamic(32);
+			    break;
+            case 8:
+                CircleDynamic(64);
+			    break;
 			default:
 				StandardSingle ();
 				break;
@@ -131,5 +137,7 @@ public enum EnemyAttackType{
 	CircleEight = 3,
 	CardinalFour = 4,
 	NoncardinalFour = 5,
-	Spiral = 6
+	Spiral = 6,
+    CircleThirtyTwo = 7,
+    CircleSixtyFour = 8
 };

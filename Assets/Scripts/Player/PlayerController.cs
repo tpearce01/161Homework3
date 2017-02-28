@@ -45,10 +45,13 @@ public class PlayerController : MonoBehaviour
     }
 
 	void Fusion(){
-		if(Input.GetButtonDown("Y" + controllerNumber)){
+		if(Input.GetButtonDown("Y" + controllerNumber)/*TESTING*/  || Input.GetKeyDown(KeyCode.Y)/*TESTING*/ )
+        {
+            Debug.Log("Player " + controllerNumber + " is ready to fuse");
 			readyToFuse = true;
 		}
-		if (Input.GetButtonUp ("Y" + controllerNumber)) {
+		if (Input.GetButtonUp ("Y" + controllerNumber))
+        {
 			readyToFuse = false;
 		}
 	}

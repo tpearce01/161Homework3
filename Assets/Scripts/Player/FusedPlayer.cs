@@ -24,6 +24,7 @@ public class FusedPlayer : MonoBehaviour {
 	{
 		Initialize();
 		GameManager.i.AddPlayer (gameObject);
+	    gameObject.GetComponent<Unit>().damageModifier = 0.25f;
 	}
 
 	void Update()

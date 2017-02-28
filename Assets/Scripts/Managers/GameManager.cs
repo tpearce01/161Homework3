@@ -46,4 +46,5 @@ public class GameManager : MonoBehaviour {
     {
         return ready;
     }
+
 }
