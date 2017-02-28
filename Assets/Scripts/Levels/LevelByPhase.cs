@@ -29,7 +29,7 @@ public class LevelByPhase : Level {
 					timer = Random.Range (phases [i].timeBetweenEnemiesMin, phases [i].timeBetweenEnemiesMax);
 					spawned++;
 					//If it is time to change phases
-					if (spawned >= phases [i].enemiesToSpawn) {
+					if (spawned >= phases [i].totalEnemiesToSpawn) {
 						//Change phase
 						NextPhase ();
 					}
@@ -40,7 +40,7 @@ public class LevelByPhase : Level {
 		}
 
 		//If all phases have passed,spawn the boss
-		if (phaseNumber >= phases.Count && !bossSpawned) {
+		if (phaseNumber >= phases.Count && !bossSpawned && GameObject.FindGameObjectsWithTag("Enemy").Length == 0) {
 			Instantiate (boss).transform.position = bossLocation;
 			bossSpawned = true;
 		}

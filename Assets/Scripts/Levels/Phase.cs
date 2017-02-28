@@ -5,12 +5,15 @@ using UnityEngine;
 [System.Serializable]
 public class Phase {
 	public int phaseNumber;
-	public int enemiesToSpawn;
+	public int totalEnemiesToSpawn;
+	public int numToSpawnPerIteration;
 	public float timeBetweenEnemiesMin;
 	public float timeBetweenEnemiesMax;
 	public List<EnemyToSpawn> enemies;
 
-	public GameObject Spawn(){
-		return enemies[Random.Range(0,enemies.Count)].Spawn();
+	public void Spawn(){
+		for (int i = 0; i < numToSpawnPerIteration; i++) {
+			enemies [Random.Range (0, enemies.Count)].Spawn ();
+		}
 	}
 }

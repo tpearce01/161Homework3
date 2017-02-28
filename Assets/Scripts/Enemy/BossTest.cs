@@ -6,12 +6,6 @@ public class BossTest : MonoBehaviour {
 
     public int speed;
     private int phase;
-    private int remaining;
-
-    void Start()
-    {
-        remaining = GameObject.FindGameObjectsWithTag("Enemy").Length;
-    }
 
     // Update is called once per frame
     void Update()
@@ -47,7 +41,7 @@ public class BossTest : MonoBehaviour {
 
     void CheckPhase()
     {
-        if (gameObject.GetComponentsInChildren<Unit>().Length == 0)
+        if (gameObject.GetComponentsInChildren<Unit>().Length <= 1)
         {
             phase = 1;
         }
@@ -72,7 +66,7 @@ public class BossTest : MonoBehaviour {
 
     void CheckDestroy()
     {
-		if (GameObject.FindGameObjectsWithTag("Enemy").Length == 0)
+		if (GameObject.FindGameObjectsWithTag("Enemy").Length <= 1)
         {
             Spawner.i.SpawnObject(Prefab.VictoryMenu, Vector3.zero);
             Destroy(gameObject);

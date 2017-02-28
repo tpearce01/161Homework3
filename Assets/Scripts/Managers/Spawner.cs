@@ -109,7 +109,7 @@ public class Spawner : MonoBehaviour {
     {
         GameObject spawned = SpawnCustomEnemy(location, maxHealth, attackType, timeBetweenAttacks, attackCooldown, speed);
         spawned.GetComponent<SpriteRenderer>().enabled = false;
-        spawned.GetComponentInChildren<SpriteRenderer>().enabled = false;
+        spawned.GetComponentsInChildren<SpriteRenderer>()[1].enabled = false;
         return spawned;
     }
 
