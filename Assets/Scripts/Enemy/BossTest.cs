@@ -72,7 +72,7 @@ public class BossTest : MonoBehaviour {
 
     void CheckDestroy()
     {
-        if (Mathf.Approximately(0f, bossHealth))
+		if (GameObject.FindGameObjectsWithTag("Enemy").Length == 0)
         {
             Spawner.i.SpawnObject(Prefab.VictoryMenu, Vector3.zero);
             Destroy(gameObject);
