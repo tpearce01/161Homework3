@@ -53,6 +53,7 @@ public class Unit : MonoBehaviour
 			ScreenShake.i.StartShake (0.2f, Vector3.one * .5f);
 		}
 		Spawner.i.SpawnObject (Prefab.Explosion, gameObject.transform.position);
+        SoundManager.i.PlaySound(Sound.Explosion, SoundManager.i.volume);
         Destroy(gameObject);
     }
 }

@@ -19,6 +19,7 @@ public class PauseMenuManager : MonoBehaviour {
 
 	public void Restart(){
 		Time.timeScale = 1;
+	    SoundManager.i.EndAllSound();
 		SceneManager.LoadScene (SceneManager.GetActiveScene().name);
 	}
 

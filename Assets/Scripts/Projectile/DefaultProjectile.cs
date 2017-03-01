@@ -15,7 +15,7 @@ public class DefaultProjectile : Projectile
     {
 		if (other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("Turret"))
         {
-            //SoundManager.i.PlaySound(Sound.EnemyHit, 0.5f);
+            SoundManager.i.PlaySound(Sound.Hit, SoundManager.i.volume / 4);
             Spawner.i.SpawnObject(Prefab.Sparks, gameObject.transform.position);
             other.gameObject.GetComponent<Unit>().ModifyHealth(-damage);
 			DestroyProjectile();
