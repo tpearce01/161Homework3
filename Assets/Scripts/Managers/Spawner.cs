@@ -158,7 +158,19 @@ public class Spawner : MonoBehaviour {
 		activeObject.GetComponent<EnemyBehavior> ().speed = speed;
 		return activeObject;
 	}
-	public GameObject SpawnCustomEnemy(Vector3 location, int maxHealth, EnemyAttackType attackType, float timeBetweenAttacks, float attackCooldown, int speed, Sprite sprite){
+    // Create an enemy that is specifically a turret on the boss
+    public GameObject SpawnCustomTurret(Vector3 location, int maxHealth, EnemyAttackType attackType, float timeBetweenAttacks, float attackCooldown, int speed)
+    {
+        activeObject = Instantiate(prefabs[(int)Prefab.Turret], location, Quaternion.identity) as GameObject;
+        activeObject.GetComponent<Turret>().maxHealth = maxHealth;
+        activeObject.GetComponent<Turret>().ModifyHealth(maxHealth);
+        activeObject.GetComponent<EnemyBehavior>().attackType = attackType;
+        activeObject.GetComponent<EnemyBehavior>().timeBetweenAttacks = timeBetweenAttacks;
+        activeObject.GetComponent<EnemyBehavior>().attackCooldown = attackCooldown;
+        activeObject.GetComponent<EnemyBehavior>().speed = speed;
+        return activeObject;
+    }
+    public GameObject SpawnCustomEnemy(Vector3 location, int maxHealth, EnemyAttackType attackType, float timeBetweenAttacks, float attackCooldown, int speed, Sprite sprite){
 		activeObject = Instantiate(prefabs[(int)Prefab.Enemy], location, Quaternion.identity) as GameObject;
 		activeObject.GetComponent<Unit> ().maxHealth = maxHealth;
 		activeObject.GetComponent<Unit> ().ModifyHealth (maxHealth);
@@ -172,7 +184,7 @@ public class Spawner : MonoBehaviour {
 
     public GameObject SpawnBossComponent(Vector3 location, int maxHealth, EnemyAttackType attackType, float timeBetweenAttacks, float attackCooldown, int speed)
     {
-        activeObject = SpawnCustomEnemy(location, maxHealth, attackType, timeBetweenAttacks, attackCooldown, speed);
+        activeObject = SpawnCustomTurret(location, maxHealth, attackType, timeBetweenAttacks, attackCooldown, speed);
 		activeObject.GetComponent<SpriteRenderer>().enabled = false;
 		activeObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = false;
 		return activeObject;
@@ -204,5 +216,6 @@ public enum Prefab{
 	FusedPlayer = 7,
     GameOverMenu = 8,
 	Sparks = 9,
-	Explosion = 10
+	Explosion = 10,
+    Turret = 11
 };

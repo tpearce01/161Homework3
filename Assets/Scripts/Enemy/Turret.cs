@@ -16,7 +16,7 @@ public class Turret : MonoBehaviour
 
     void Awake()
     {
-        bossHealth = GameObject.FindGameObjectWithTag("BossHealth");
+        bossHealth = GameObject.FindGameObjectWithTag("Boss");
     }
     void Start()
     {
@@ -47,18 +47,17 @@ public class Turret : MonoBehaviour
         //If dead, kill the unit
         if (health <= 0)
         {
-            bossHealth.GetComponent<BossHealth>().modifyBossHealth(damangeToBoss);
             Kill();
         }
     }
 
-    //Destroy the unit
+    //Injury the Boss
     public void Kill()
     {
         //Spawner.i.SpawnObject(Prefab.Explosion0, gameObject.transform.position);
         //SoundManager.i.PlaySound(Sound.Explosion0, 0.5f);
         print("hurt boss");
-        bossHealth.GetComponent<BossHealth>().modifyBossHealth(-damangeToBoss);
+        bossHealth.GetComponent<Boss0>().modifyBossHealth(-damangeToBoss);
         Destroy(gameObject);
     }
 }
