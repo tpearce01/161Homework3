@@ -76,45 +76,45 @@ public class EnemyBehavior : MonoBehaviour
 	void StandardSingle()
 	{
 		//SoundManager.i.PlaySound (Sound.Shot1, 0.5f);
-		Spawner.i.SpawnObject (Prefab.Shot2, gameObject.transform.position);
+		Spawner.i.SpawnEnemyBullet (gameObject.transform.position);
 	}
 
 	//Single bullet towards the player
 	void DirectedSingle(){
 		//SoundManager.i.PlaySound (Sound.Shot1, 0.5f);
-		Spawner.i.SpawnObjectTowardRandomPlayer (Prefab.Shot2, gameObject.transform.position);
+		Spawner.i.SpawnEnemyBulletTowardPlayer (gameObject.transform.position);
 	}
 
 	//Spawns 2 bullets forward
 	void StandardDouble(){
 		//SoundManager.i.PlaySound (Sound.Shot1, 0.5f);
-		Spawner.i.SpawnObject (Prefab.Shot2, gameObject.transform.position + transform.up);
-		Spawner.i.SpawnObject (Prefab.Shot2, gameObject.transform.position - transform.up);
+		Spawner.i.SpawnEnemyBullet (gameObject.transform.position + transform.up);
+		Spawner.i.SpawnEnemyBullet (gameObject.transform.position - transform.up);
 	}
 
 	//Spawns 1 bullet in a random direction
 	void RandomSingle(){
 		//SoundManager.i.PlaySound (Sound.Shot1, 0.5f);
-		Spawner.i.SpawnObjectWithRotation (Prefab.Shot2, gameObject.transform.position, new Vector3(0,0,Random.Range(-180,181)));
+		Spawner.i.SpawnEnemyBulletWithRotation (gameObject.transform.position, new Vector3(0,0,Random.Range(-180,181)));
 	}
 
 	//Spawns a circle that shoots in the cardinal directions
 	void CircleDynamic(int bullets){
 		for (int i = 0; i < bullets; i++) {
-			Spawner.i.SpawnObjectWithRotation(Prefab.Shot2, gameObject.transform.position, new Vector3(0,0,i * 360 / bullets));
+			Spawner.i.SpawnEnemyBulletWithRotation(gameObject.transform.position, new Vector3(0,0,i * 360 / bullets));
 		}
 	}
 
 	//Spawns a circle that does not shoot in the cardinal directions. Offset by half the angle between shots
 	void OffsetCircleDynamic(int bullets){
 		for (int i = 0; i < bullets; i++) {
-			Spawner.i.SpawnObjectWithRotation(Prefab.Shot2, gameObject.transform.position, new Vector3(0,0,i * 360 / bullets + 360 / bullets / 2));
+			Spawner.i.SpawnEnemyBulletWithRotation(gameObject.transform.position, new Vector3(0,0,i * 360 / bullets + 360 / bullets / 2));
 		}
 	}
 
 	//Rapid fire in a spiral pattern
 	void Spiral(){
-		Spawner.i.SpawnObjectWithRotation(Prefab.Shot2, gameObject.transform.position, new Vector3(0,0,spiralDegree));
+		Spawner.i.SpawnEnemyBulletWithRotation(gameObject.transform.position, new Vector3(0,0,spiralDegree));
 		spiralDegree += 15;
 	}
 

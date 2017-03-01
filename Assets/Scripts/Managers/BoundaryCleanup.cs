@@ -8,7 +8,11 @@ public class BoundaryCleanup : MonoBehaviour {
     {
         if (!other.gameObject.CompareTag("Player") && !other.gameObject.CompareTag("Background") )
         {
-            Destroy(other.gameObject);
+			if (other.gameObject.CompareTag ("Projectile")) {
+				other.gameObject.SetActive (false);
+			} else {
+				Destroy (other.gameObject);
+			}
         }
     }
 
@@ -16,7 +20,11 @@ public class BoundaryCleanup : MonoBehaviour {
     {
         if (!other.gameObject.CompareTag("Player") && !other.gameObject.CompareTag("Background"))
         {
-            Destroy(other.gameObject);
+			if (other.gameObject.CompareTag ("Projectile")) {
+				other.gameObject.SetActive (false);
+			} else {
+				Destroy (other.gameObject);
+			}
         }
     }
 }

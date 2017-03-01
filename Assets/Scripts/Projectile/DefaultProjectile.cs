@@ -18,7 +18,7 @@ public class DefaultProjectile : Projectile
             //SoundManager.i.PlaySound(Sound.EnemyHit, 0.5f);
             Spawner.i.SpawnObject(Prefab.Sparks, gameObject.transform.position);
             other.gameObject.GetComponent<Unit>().ModifyHealth(-damage);
-            Destroy(gameObject);
+			DestroyProjectile();
         }
 
     }

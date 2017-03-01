@@ -11,7 +11,7 @@ public abstract class Projectile : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 		Move();
-	    CheckDestroy();
+	    //CheckDestroy();
 	}
 
     protected abstract void Move();
@@ -25,7 +25,12 @@ public abstract class Projectile : MonoBehaviour {
         }
         else
         {
-            Destroy(gameObject);
+			timeToLive = 2;
+			DestroyProjectile();
         }
     }
+
+	public void DestroyProjectile(){
+		gameObject.SetActive (false);
+	}
 }

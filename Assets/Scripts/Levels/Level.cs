@@ -27,7 +27,7 @@ public abstract class Level : MonoBehaviour
         {
             Spawner.i.SpawnObject(Prefab.Player1, new Vector3(-10, 5, 0));
         }
-
+		Spawner.i.SpawnBullets ();
         InitializeLevel();
     }
 
