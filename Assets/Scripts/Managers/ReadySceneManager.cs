@@ -8,6 +8,7 @@ public class ReadySceneManager : MonoBehaviour
 {
     public BreatheAnimation ba;
     public Text[] t;
+	public string sceneToLoad;
 	
 	// Update is called once per frame
 	void Update () {
@@ -73,7 +74,7 @@ public class ReadySceneManager : MonoBehaviour
         {
             if (b)
             {
-                SceneManager.LoadScene("level_0");
+                SceneManager.LoadScene(sceneToLoad);
             }
         }
     }
