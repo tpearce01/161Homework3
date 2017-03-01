@@ -57,7 +57,7 @@ public class BossTest : MonoBehaviour {
         spawned.transform.parent = gameObject.transform;
         spawned.transform.localPosition = Vector3.zero - transform.right * 5 + transform.up * 2;
 
-        spawned = Spawner.i.SpawnBossComponent(Vector3.zero, 1000, EnemyAttackType.CircleSixtyFour, 5f, 1, 0);
+        spawned = Spawner.i.SpawnBossComponent(Vector3.zero, 300, EnemyAttackType.CircleSixtyFour, 5f, 1, 0);
         spawned.transform.parent = gameObject.transform;
         spawned.transform.localPosition = Vector3.zero - transform.right * 3;
 

@@ -48,11 +48,11 @@ public class Unit : MonoBehaviour
     //Destroy the unit
     public void Kill()
     {
-        //Spawner.i.SpawnObject(Prefab.Explosion0, gameObject.transform.position);
         //SoundManager.i.PlaySound(Sound.Explosion0, 0.5f);
 		if (ScreenShake.i != null) {
 			ScreenShake.i.StartShake (0.2f, Vector3.one * .5f);
 		}
+		Spawner.i.SpawnObject (Prefab.Explosion, gameObject.transform.position);
         Destroy(gameObject);
     }
 }

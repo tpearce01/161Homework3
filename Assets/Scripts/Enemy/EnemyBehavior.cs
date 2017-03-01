@@ -123,7 +123,7 @@ public class EnemyBehavior : MonoBehaviour
 		if(other.gameObject.CompareTag("Player")){
 			other.gameObject.GetComponent<Unit>().ModifyHealth(-20);
 			//SoundManager.i.PlaySound (Prefab.Explosion1, 0.5f);
-			//Spawner.i.SpawnObject (Prefab.Explosion1, gameObject.transform.position);
+			Spawner.i.SpawnObject (Prefab.Explosion, gameObject.transform.position);
 			Destroy(gameObject);
 		}
 	}
