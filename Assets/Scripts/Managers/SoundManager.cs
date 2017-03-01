@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class SoundManager : MonoBehaviour {
 
 	public static SoundManager i;
+    public float volume; 
 
 	//EndSound vars
 	AudioSource target;
@@ -20,9 +21,9 @@ public class SoundManager : MonoBehaviour {
 		duration = 0;
 	}
 
-	void Start(){
-		//PlaySound (Sound.Test, 1f);
-		//EndSoundFade ("Test", 5f);
+	void Start()
+	{
+	    volume = 0.5f;
 		DontDestroyOnLoad(gameObject);
 	}
 
@@ -83,5 +84,5 @@ public class SoundManager : MonoBehaviour {
 }
 
 	public enum Sound{
-		
+		StorySong1 = 0
 	};
