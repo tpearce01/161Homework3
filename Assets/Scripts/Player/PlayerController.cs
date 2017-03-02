@@ -67,6 +67,7 @@ public class PlayerController : MonoBehaviour
             {
                 //Primary Weapon
                 PrimaryWeapon();
+                SoundManager.i.PlaySound(Sound.Shoot, SoundManager.i.volume/4);
                 attackCooldown = TimeBetweenAttacks;
             }
         }

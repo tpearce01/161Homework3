@@ -122,7 +122,7 @@ public class EnemyBehavior : MonoBehaviour
 	void OnCollisionEnter2D(Collision2D other){
 		if(other.gameObject.CompareTag("Player")){
 			other.gameObject.GetComponent<Unit>().ModifyHealth(-20);
-			//SoundManager.i.PlaySound (Prefab.Explosion1, 0.5f);
+			SoundManager.i.PlaySound (Sound.Explosion, SoundManager.i.volume);
 			Spawner.i.SpawnObject (Prefab.Explosion, gameObject.transform.position);
 			Destroy(gameObject);
 		}
