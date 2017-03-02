@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class SoundManager : MonoBehaviour {
 
 	public static SoundManager i;
+    public float volume; 
 
 	//EndSound vars
 	AudioSource target;
@@ -15,15 +16,18 @@ public class SoundManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
-		i = this;
-		target = null;
-		duration = 0;
-	}
-
-	void Start(){
-		//PlaySound (Sound.Test, 1f);
-		//EndSoundFade ("Test", 5f);
-		DontDestroyOnLoad(gameObject);
+	    if (GameObject.FindGameObjectsWithTag("GameManager").Length > 1)
+	    {
+	        Destroy(gameObject);
+	    }
+	    else
+	    {
+	        i = this;
+	        target = null;
+	        duration = 0;
+            volume = 0.5f;
+            //DontDestroyOnLoad(gameObject);
+        }
 	}
 
 	// Update is called once per frame
@@ -80,8 +84,32 @@ public class SoundManager : MonoBehaviour {
 		}
 		duration = d;
 	}
+
+    public void EndAllSound()
+    {
+        AudioSource[] sources = gameObject.GetComponents<AudioSource>();
+        for (int i = 0; i < sources.Length; i++)
+        {
+                EndSoundAbrupt(sources[i].clip.name);
+        }
+    }
+    public void EndAllSound(string soundName)
+    {
+        AudioSource[] sources = gameObject.GetComponents<AudioSource>();
+        for (int i = 0; i < sources.Length; i++)
+        {
+            if (sources[i].clip.name == soundName)
+            {
+                EndSoundAbrupt(soundName);
+            }
+        }
+    }
 }
 
 	public enum Sound{
-		
+		StorySong1 = 0,
+        Explosion = 1,
+        Hit = 2,
+        Shoot = 3,
+        Level1Audio = 4
 	};

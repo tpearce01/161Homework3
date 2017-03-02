@@ -16,7 +16,7 @@ public class EnemyProjectile : Projectile
     {
         if (other.gameObject.CompareTag("Player"))
         {
-			//SoundManager.i.PlaySound(Sound.PlayerHit, 0.5f);
+			SoundManager.i.PlaySound(Sound.Hit, SoundManager.i.volume / 4);
 			Spawner.i.SpawnObject(Prefab.Sparks, gameObject.transform.position);
             other.gameObject.GetComponent<Unit>().ModifyHealth(-damage);
 			DestroyProjectile();
