@@ -6,26 +6,34 @@ using UnityEngine.UI;
 public class BossHealth : MonoBehaviour {
 
     // Use this for initialization
-    public  float bossHealthMax;
-    public float bossHealthCurrent;
+    private  float bossHealthMax;
+    private float bossHealthCurrent;
 
     public Slider healthSlider;
     public Image healthImage;  
+    
+    void Awake()
+    {
+        bossHealthMax = GameObject.FindGameObjectWithTag("Boss").GetComponent<Boss0>().bossMaxHealth;
+    }
 	void Start ()
     {
         bossHealthCurrent = bossHealthMax;
-        modifyBossHealth(0); 
+        modifyBossHealth(); 
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
-		
-	}
 
-    public void modifyBossHealth(float value)
+        bossHealthCurrent = GameObject.FindGameObjectWithTag("Boss").GetComponent<Boss0>().bossCurrentHealth;
+        modifyBossHealth();
+
+        print(bossHealthCurrent);
+    }
+
+    public void modifyBossHealth()
     {
-        bossHealthCurrent += value ;
         if (bossHealthCurrent >= bossHealthMax)
         {
             bossHealthCurrent = bossHealthMax;

@@ -107,7 +107,7 @@ public class SoundManager : MonoBehaviour {
 }
 
 	public enum Sound{
-		StorySong1 = 0,
+		StoryAudio1 = 0,
         Explosion = 1,
         Hit = 2,
         Shoot = 3,

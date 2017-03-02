@@ -4,83 +4,56 @@ using UnityEngine;
 
 public class Boss0 : MonoBehaviour
 {
-
-    private float bossHealth;
-    private float bossMaxHealth;
-    public int speed;
-    private int phase;
-
-
-    void Awake()
-    {
-        bossMaxHealth = GameObject.FindGameObjectWithTag("BossHealth").GetComponent<BossHealth>().bossHealthMax;
-        bossHealth = GameObject.FindGameObjectWithTag("BossHealth").GetComponent<BossHealth>().bossHealthCurrent;
-    }
-
-	// Use this for initialization
-	void Start ()
-	{
-
-    }
-	
+    public float bossCurrentHealth =100f;
+    public float bossMaxHealth =100f;
+    public int phase = 0;
+    public int speed = 3;
+   
 	// Update is called once per frame
-	void Update ()
-	{
-	    Move();
-	    switch (phase)
-	    {
-            case 0:
-                CheckPhase();
-	            break;
-            case 1:
-                FinalPhase();
-	            break;
-            default:
-                CheckDestroy();
-	            break;
-	    }
-	}
+	//void Update ()
+	//{
+	//    //Move();
+	//    //switch (phase)
+	//    //{
+ //    //       case 0:
+ //    //           CheckPhase();
+	//    //        break;
+ //    //       case 1:
+ //    //           FinalPhase();
+	//    //        break;
+ //    //       default:
+ //    //           CheckDestroy();
+	//    //        break;
+	//    //}
+	//}
 
-    void Move()
+    public virtual void  Move(int bossSpeed)
     {
         if ((int)Time.time % 4 == 0 || (int)Time.time % 4 == 1)
         {
             gameObject.transform.position = new Vector3(gameObject.transform.position.x,
-                gameObject.transform.position.y + Time.deltaTime * speed, gameObject.transform.position.z);
+                gameObject.transform.position.y + Time.deltaTime * bossSpeed, gameObject.transform.position.z);
         }
         else
         {
             gameObject.transform.position = new Vector3(gameObject.transform.position.x,
-                gameObject.transform.position.y - Time.deltaTime * speed, gameObject.transform.position.z);
+                gameObject.transform.position.y - Time.deltaTime * bossSpeed, gameObject.transform.position.z);
         }
     }
 
-    void CheckPhase()
+    public virtual int CheckPhase(float health, float maxHealth,float phaseRatio , int phase)
     {
-        if ( Mathf.Approximately(bossHealth , bossMaxHealth /.5f))
+        if ( Mathf.Approximately(health, (maxHealth * phaseRatio)))
         {
-            phase = 1;
+            print("true");
+            return phase += 1;
         }
+
+        return phase;
     }
 
-    void FinalPhase()
-    {
-        GameObject spawned = Spawner.i.SpawnBossComponent(Vector3.zero, 1000,EnemyAttackType.Spiral,.035f, 1, 0);
-        spawned.transform.parent = gameObject.transform;
-        spawned.transform.localPosition = Vector3.zero - transform.right*5 - transform.up*2;
 
-        spawned = Spawner.i.SpawnBossComponent(Vector3.zero, 1000, EnemyAttackType.Spiral, .03f, 1, 0);
-        spawned.transform.parent = gameObject.transform;
-        spawned.transform.localPosition = Vector3.zero - transform.right * 5 + transform.up * 2;
-
-        spawned = Spawner.i.SpawnBossComponent(Vector3.zero, 1000, EnemyAttackType.CircleSixtyFour, 5f, 1, 0);
-        spawned.transform.parent = gameObject.transform;
-        spawned.transform.localPosition = Vector3.zero - transform.right * 3;
-
-        phase = 2;
-    }
-
-    void CheckDestroy()
+    public virtual void CheckDestroy(float bossHealth)
     {
         if ( Mathf.Approximately(0f, bossHealth ))
         {
@@ -89,5 +62,15 @@ public class Boss0 : MonoBehaviour
         }
     }
 
+    public virtual void modifyBossHealth(float value)
+    {
+        bossCurrentHealth += value;
+        if (bossCurrentHealth >= bossMaxHealth)
+        {
+            bossCurrentHealth = bossMaxHealth;
+        }
+
+
+    }
 
 }

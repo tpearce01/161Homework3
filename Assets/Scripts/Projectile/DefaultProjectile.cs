@@ -13,7 +13,7 @@ public class DefaultProjectile : Projectile
     //Damage enemies on collision
     void OnTriggerEnter2D(Collider2D other)
     {
-		if (other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("Turret"))
+		if (other.gameObject.CompareTag("Enemy") )
         {
             SoundManager.i.PlaySound(Sound.Hit, SoundManager.i.volume / 4);
             Spawner.i.SpawnObject(Prefab.Sparks, gameObject.transform.position);
@@ -21,5 +21,11 @@ public class DefaultProjectile : Projectile
 			DestroyProjectile();
         }
 
+        if ( other.gameObject.CompareTag("Turret"))
+        {
+            Spawner.i.SpawnObject(Prefab.Sparks, gameObject.transform.position);
+            other.gameObject.GetComponent<Turret>().ModifyHealth(-damage);
+            DestroyProjectile();
+        }
     }
 }
