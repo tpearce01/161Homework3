@@ -186,7 +186,7 @@ public class Spawner : MonoBehaviour {
     {
         activeObject = SpawnCustomTurret(location, maxHealth, attackType, timeBetweenAttacks, attackCooldown, speed);
 		activeObject.GetComponent<SpriteRenderer>().enabled = false;
-		activeObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = false;
+		//activeObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = false;
 		return activeObject;
     }
 

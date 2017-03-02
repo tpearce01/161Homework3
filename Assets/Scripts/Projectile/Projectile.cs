@@ -11,7 +11,7 @@ public abstract class Projectile : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 		Move();
-	    CheckDestroy();
+	    //CheckDestroy();
 	}
 
     protected abstract void Move();

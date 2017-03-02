@@ -37,17 +37,17 @@ public class Boss1 : Boss0 {
 
     void FinalPhase()
     {
-        GameObject spawned = Spawner.i.SpawnBossComponent(Vector3.zero, 1000, EnemyAttackType.Spiral, .035f, 1, 0);
+        GameObject spawned = Spawner.i.SpawnBossComponent(Vector3.zero, 100, EnemyAttackType.Spiral, .035f, 1, 0);
         spawned.transform.parent = gameObject.transform;
         spawned.transform.localPosition = Vector3.zero - transform.right * 5 - transform.up * 2;
         spawned.gameObject.tag = "Turret";
 
-        spawned = Spawner.i.SpawnBossComponent(Vector3.zero, 1000, EnemyAttackType.Spiral, .03f, 1, 0);
+        spawned = Spawner.i.SpawnBossComponent(Vector3.zero, 100, EnemyAttackType.Spiral, .03f, 1, 0);
         spawned.transform.parent = gameObject.transform;
         spawned.transform.localPosition = Vector3.zero - transform.right * 5 + transform.up * 2;
         spawned.gameObject.tag = "Turret";
 
-        spawned = Spawner.i.SpawnBossComponent(Vector3.zero, 1000, EnemyAttackType.CircleSixtyFour, 5f, 1, 0);
+        spawned = Spawner.i.SpawnBossComponent(Vector3.zero, 100, EnemyAttackType.CircleSixtyFour, 5f, 1, 0);
         spawned.transform.parent = gameObject.transform;
         spawned.transform.localPosition = Vector3.zero - transform.right * 3;
         spawned.gameObject.tag = "Turret";
