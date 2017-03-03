@@ -149,7 +149,7 @@ public class Spawner : MonoBehaviour {
 
 	//Creates an enemy with customized Unit and EnemyBehavior fields. May also customize Sprite
 	public GameObject SpawnCustomEnemy(Vector3 location, int maxHealth, EnemyAttackType attackType, float timeBetweenAttacks, float attackCooldown, int speed){
-		activeObject = Instantiate(prefabs[(int)Prefab.Enemy], location, Quaternion.identity) as GameObject;
+        activeObject = Instantiate(prefabs[(int)Prefab.Enemy], location, Quaternion.identity) as GameObject;
 		activeObject.GetComponent<Unit> ().maxHealth = maxHealth;
 		activeObject.GetComponent<Unit> ().ModifyHealth (maxHealth);
 		activeObject.GetComponent<EnemyBehavior> ().attackType = attackType;
@@ -181,6 +181,14 @@ public class Spawner : MonoBehaviour {
 		activeObject.GetComponent<SpriteRenderer> ().sprite = sprite;
 		return activeObject;
 	}
+
+    public GameObject SpawnBossComponent(Vector3 location, int maxHealth, EnemyAttackType attackType, float timeBetweenAttacks, float attackCooldown)
+    {
+        activeObject = SpawnCustomEnemy(location, maxHealth, attackType, timeBetweenAttacks, attackCooldown, 0);
+        activeObject.GetComponent<SpriteRenderer>().enabled = false;
+        activeObject.GetComponentsInChildren<SpriteRenderer>()[1].enabled = false;
+        return activeObject;
+    }
 
     public GameObject SpawnBossComponent(Vector3 location, int maxHealth, EnemyAttackType attackType, float timeBetweenAttacks, float attackCooldown, int speed)
     {
