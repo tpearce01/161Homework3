@@ -1,18 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Boss : MonoBehaviour
 {
+    public GameObject bossHealthPrefab;
+    private Slider bossHealth;
     public List<BossPhase> phases;
     private int currentPhase;
     public int speed;
     public Sprite bossSprite;
     private SpriteRenderer bossSpriteRenderer;
+    public bool healthByPhase;
 
     void Start()
     {
         gameObject.transform.FindChild("BossSprite").GetComponent<SpriteRenderer>().sprite = bossSprite;
+        bossHealth = Instantiate(bossHealthPrefab).transform.FindChild("Slider").GetComponent<Slider>();
         NextPhase();
     }
 
@@ -41,6 +46,8 @@ public class Boss : MonoBehaviour
 
     void NextPhase()
     {
+        bossHealth.value = (float) (phases.Count - currentPhase)/phases.Count;
+
         if (currentPhase < phases.Count)
         {
             List<GameObject> spawnedComponents = phases[currentPhase].Spawn();
