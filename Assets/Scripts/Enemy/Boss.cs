@@ -12,7 +12,7 @@ public class Boss : MonoBehaviour
     public int speed;
     public Sprite bossSprite;
     private SpriteRenderer bossSpriteRenderer;
-    public bool healthByPhase;
+    //public bool healthByPhase;
 
     void Start()
     {

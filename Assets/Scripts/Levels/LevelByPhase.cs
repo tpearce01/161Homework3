@@ -11,13 +11,13 @@ public class LevelByPhase : Level {
 	public GameObject boss;		//Boss prefab. Every level must have a boss
 	public Vector3 bossLocation;
 	bool bossSpawned;
-    private Sound audioToPlay;
+    public Sound audioToPlay;
 
 	public override void InitializeLevel (){
 		timer = startDelay;
 	    if (audioToPlay != null)
 	    {
-	        SoundManager.i.PlaySound(Sound.Level1Audio, SoundManager.i.volume/2);
+	        SoundManager.i.PlaySound(audioToPlay, SoundManager.i.volume/2);
 	    }
 	}
 

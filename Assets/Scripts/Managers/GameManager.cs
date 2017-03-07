@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour {
 	public static GameManager i;                        //Static reference to GameManager
 	List<GameObject> players = new List<GameObject>();  //List of players in the scene
     bool[] ready = new bool[2];                         //Determines which of the 2 players are ready
+    public int level;
 
 	void Awake () {
 		if (GameObject.FindGameObjectsWithTag ("GameManager").Length > 1) {
@@ -14,6 +15,7 @@ public class GameManager : MonoBehaviour {
 		} else {
 			DontDestroyOnLoad (gameObject);
 			i = this;
+		    level = 1;
 		}
 	}
 

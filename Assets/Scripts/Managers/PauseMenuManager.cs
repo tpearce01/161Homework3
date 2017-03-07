@@ -3,10 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PauseMenuManager : MonoBehaviour {
+public class PauseMenuManager : MonoBehaviour
+{
+    public static PauseMenuManager i;
 
-	void Awake(){
-		Time.timeScale = 0;
+    void Awake()
+	{
+	    if (PauseMenuManager.i == null)
+	    {
+            i = this;
+	    }
+
+	    Time.timeScale = 0;
 		if (ScreenShake.i != null) {
 			ScreenShake.i.EndShake ();
 		}
@@ -22,6 +30,15 @@ public class PauseMenuManager : MonoBehaviour {
 	    SoundManager.i.EndAllSound();
 		SceneManager.LoadScene (SceneManager.GetActiveScene().name);
 	}
+
+    public void Next()
+    {
+        Time.timeScale = 1;
+        SoundManager.i.EndAllSound();
+        GameManager.i.level += 1;
+        Debug.Log("Loading Level" + GameManager.i.level.ToString() + "Intro");
+        SceneManager.LoadScene("Level" + GameManager.i.level.ToString() + "Intro");
+    }
 
 	public void Quit(){
 		Application.Quit ();

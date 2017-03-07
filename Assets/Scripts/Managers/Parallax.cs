@@ -10,8 +10,8 @@ public class Parallax : MonoBehaviour {
 	List<GameObject> backgrounds = new List<GameObject>();
 	public Vector3 originalPosition;
 	public float spriteWidth;
-	public int minSpeed;
-	public int maxSpeed;
+	public float minSpeed;
+	public float maxSpeed;
 
 	void Awake(){
 		i = this;

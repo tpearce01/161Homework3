@@ -106,10 +106,14 @@ public class SoundManager : MonoBehaviour {
     }
 }
 
-	public enum Sound{
-		StoryAudio1 = 0,
-        Explosion = 1,
-        Hit = 2,
-        Shoot = 3,
-        Level1Audio = 4
-	};
+[System.Serializable]
+public enum Sound{
+	StoryAudio1 = 0,
+    Explosion = 1,
+    Hit = 2,
+    Shoot = 3,
+    Level1Audio = 4,
+    StoryAudio2 = 5,
+    StoryAudio3 = 6,
+    Level2Audio = 7
+};

@@ -73,7 +73,7 @@ public class StorySceneManager : MonoBehaviour
 
     void NextScene()
     {
-        SoundManager.i.EndSoundAbrupt("StoryAudio1");
+        SoundManager.i.EndAllSound();
         SceneManager.LoadScene(sceneToLoad);
     }
 }
