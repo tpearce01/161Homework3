@@ -104,8 +104,8 @@ public class FusedPlayer : MonoBehaviour {
 	public void AttackType0()
 	{
 		//SoundManager.i.PlaySound (Sound.Shot1, 0.5f);
-		Spawner.i.SpawnObject(Prefab.Shot1, gameObject.transform.position + Vector3.right + Vector3.up);
-		Spawner.i.SpawnObject(Prefab.Shot1, gameObject.transform.position + Vector3.right - Vector3.up);
+		Spawner.i.SpawnPlayerBullet(gameObject.transform.position + Vector3.right + Vector3.up);
+		Spawner.i.SpawnPlayerBullet(gameObject.transform.position + Vector3.right - Vector3.up);
 	}
 
 	//Get player input and move player is applicable
