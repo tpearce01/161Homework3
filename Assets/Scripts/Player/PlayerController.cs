@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public static PlayerController i;   //Public reference to player
     private Rigidbody2D rigidbody;      //Rigidbody
     public int moveSpeed;               //Speed of movement
     private AttackType at;              //Current attack type
@@ -14,11 +13,6 @@ public class PlayerController : MonoBehaviour
 	protected int controllerNumber;		//Controller number associated with this player
     private Vector3 finalPos;           //Final position to move player to
 	public bool readyToFuse;
-
-    void Awake()
-    {
-        i = this;
-    }
 
     void Start()
     {
@@ -42,6 +36,8 @@ public class PlayerController : MonoBehaviour
     {
         rigidbody = gameObject.GetComponent<Rigidbody2D>();
         at = AttackType.Standard;
+        gameObject.GetComponent<Unit>().health = Level.i.totalHealth / 2;
+        gameObject.GetComponent<Unit>().ModifyHealth(0);
     }
 
 	void Fusion(){
@@ -161,6 +157,36 @@ public class PlayerController : MonoBehaviour
         {
             finalPos += transform.right;
         }
+    }
+
+    public void DamageVisual()
+    {
+        StartCoroutine(DamageVisualRoutine());
+    }
+
+    public IEnumerator DamageVisualRoutine()
+    {
+        Debug.Log("Coroutine start");
+        bool isRed = false;
+        SpriteRenderer sr = gameObject.transform.FindChild("Sprite").GetComponent<SpriteRenderer>();
+        for (int j = 0; j < 5; j++)
+        {
+            Debug.Log("Inside coroutine");
+            if (isRed)
+            {
+                sr.color = Color.gray;
+                isRed = false;
+            }
+            else
+            {
+                sr.color = Color.red;
+                isRed = true;
+            }
+            yield return new WaitForSeconds(.05f);
+        }
+        Debug.Log("Exiting coroutine");
+        sr.color = Color.white;
+        yield return null;
     }
 }
 

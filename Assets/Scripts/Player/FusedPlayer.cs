@@ -24,7 +24,6 @@ public class FusedPlayer : MonoBehaviour {
 	{
 		Initialize();
 		GameManager.i.AddPlayer (gameObject);
-	    gameObject.GetComponent<Unit>().damageModifier = 0.25f;
 	}
 
 	void Update()
@@ -43,7 +42,10 @@ public class FusedPlayer : MonoBehaviour {
 		rigidbody = gameObject.GetComponent<Rigidbody2D>();
 		p1at = AttackType.Standard;
 		p2at = AttackType.Standard;
-	}
+        gameObject.GetComponent<Unit>().damageModifier = 0.25f;
+        gameObject.GetComponent<Unit>().health = Level.i.fusedHealth;
+        gameObject.GetComponent<Unit>().ModifyHealth(0);
+    }
 
 	//Shoot
 	public void Shoot()
@@ -123,7 +125,8 @@ public class FusedPlayer : MonoBehaviour {
 	}
 
 	void OnDestroy(){
-		GameManager.i.RemovePlayer (gameObject);
+        Level.i.FusedDeath();
+        GameManager.i.RemovePlayer (gameObject);
 	}
 
 	//KEYBOARD CONTROLS FOR TESTING ONLY
@@ -168,5 +171,36 @@ public class FusedPlayer : MonoBehaviour {
 			finalPos += transform.right;
 		}
 	}
+
+    public void DamageVisual()
+    {
+        StartCoroutine(DamageVisualRoutine());
+    }
+
+    public IEnumerator DamageVisualRoutine()
+    {
+        Debug.Log("Coroutine start");
+        bool isRed = false;
+        SpriteRenderer sr = gameObject.transform.FindChild("Sprite").GetComponent<SpriteRenderer>();
+        for (int j = 0; j < 5; j++)
+        {
+            Debug.Log("Inside coroutine");
+            if (isRed)
+            {
+                sr.color = Color.gray;
+                isRed = false;
+            }
+            else
+            {
+                sr.color = Color.red;
+                isRed = true;
+            }
+            yield return new WaitForSeconds(.05f);
+        }
+        Debug.Log("Exiting coroutine");
+        sr.color = Color.white;
+        yield return null;
+    }
+
 }
 
