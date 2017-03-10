@@ -4,10 +4,22 @@ using UnityEngine;
 
 public abstract class Level : MonoBehaviour
 {
+    public static Level i;
     private bool playerExists;  //Ensures at least 1 player exists
-	List<float> storedPlayerHealth = new List<float>();
+	//public List<float> storedPlayerHealth = new List<float>();
+    public float totalHealth;
+    public float fusedHealth;
     private bool fused;
     private bool gameOver;
+
+    void Awake()
+    {
+        i = this;
+        totalHealth = 200;
+        fusedHealth = 100;
+        //storedPlayerHealth.Add(100f);
+        //storedPlayerHealth.Add(100f);
+    }
 
     void Start()
     {
@@ -97,21 +109,20 @@ public abstract class Level : MonoBehaviour
     }
 
 	void Fuse(){
-		//Instantiate fused ship at player 1 location
-		Spawner.i.SpawnObject (Prefab.FusedPlayer, GameManager.i.GetPlayers () [0].transform.position);
+        //Instantiate fused ship at player 1 location
+        Spawner.i.SpawnObject (Prefab.FusedPlayer, GameManager.i.GetPlayers () [0].transform.position);
 
 		List<GameObject> players = GameManager.i.GetPlayers ();
 			
         //Calculate health
-        float totalHealth = 0;	//Total health of all players except fused player
-		for (int i = 0; i < players.Count - 1; i++) {
+	    totalHealth = 0;
+		for (int i = 0; i < players.Count; i++) {
 			totalHealth += players[i].GetComponent<Unit> ().health;
 		}
-		players[players.Count-1].GetComponent<Unit>().health = totalHealth/players.Count;
 
 		//Remove players
 		for (int i = players.Count - 1; i >= 0; i--) {
-			storedPlayerHealth.Add (players[i].GetComponent<Unit> ().health);
+			//storedPlayerHealth.Add (players[i].GetComponent<Unit> ().health);
 		    GameObject toDestroy = GameManager.i.GetPlayers()[i];
 			GameManager.i.RemovePlayer (GameManager.i.GetPlayers () [i]);
 		    Destroy(toDestroy);
@@ -120,16 +131,14 @@ public abstract class Level : MonoBehaviour
         fused = true;
 	}
 
-	void Unfuse(){
+	public void Unfuse(){
 		List<GameObject> players = GameManager.i.GetPlayers ();
 		//Instantiate player1, player2
 		Spawner.i.SpawnObject(Prefab.Player1, players[0].transform.position + transform.up);
 		Spawner.i.SpawnObject(Prefab.Player2, players[0].transform.position - transform.up);
 
 		//Calculate health
-		for (int i = 1; i < players.Count; i++) {
-			players[i].GetComponent<Unit> ().health = players[0].GetComponent<Unit> ().health;
-		}
+	    fusedHealth = GameManager.i.GetPlayers()[0].GetComponent<Unit>().health;
 
 		//Remove fused ship
 	    GameObject toDesroy = GameManager.i.GetPlayers()[0];
@@ -138,6 +147,17 @@ public abstract class Level : MonoBehaviour
 
 	    fused = false;
 	}
+
+    public void FusedDeath()
+    {
+        List<GameObject> players = GameManager.i.GetPlayers();
+        //Instantiate player1, player2
+        Spawner.i.SpawnObject(Prefab.Player1, players[0].transform.position + transform.up);
+        Spawner.i.SpawnObject(Prefab.Player2, players[0].transform.position - transform.up);
+
+        //Calculate health
+        fusedHealth = GameManager.i.GetPlayers()[0].GetComponent<Unit>().health;
+    }
 
     void CheckUnfuse()
     {

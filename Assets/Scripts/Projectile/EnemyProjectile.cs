@@ -19,7 +19,15 @@ public class EnemyProjectile : Projectile
 			SoundManager.i.PlaySound(Sound.Hit, SoundManager.i.volume / 4);
 			Spawner.i.SpawnObject(Prefab.Sparks, gameObject.transform.position);
             other.gameObject.GetComponent<Unit>().ModifyHealth(-damage);
-			DestroyProjectile();
+            if (other.gameObject.GetComponent<PlayerController>() != null)
+            {
+                other.gameObject.GetComponent<PlayerController>().DamageVisual();
+            }
+            else
+            {
+                other.gameObject.GetComponent<FusedPlayer>().DamageVisual();
+            }
+            DestroyProjectile();
         }
     }
 }

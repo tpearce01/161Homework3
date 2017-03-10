@@ -11,9 +11,8 @@ public class Unit : MonoBehaviour
 	public float health;
 	public float damageModifier = 1;
 
-    void Start()
+    void Awake()
     {
-
         health = maxHealth;
         ModifyHealth(0);
     }

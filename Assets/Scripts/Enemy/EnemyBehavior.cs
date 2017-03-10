@@ -8,13 +8,14 @@ public class EnemyBehavior : MonoBehaviour
 	public EnemyAttackType attackType;
     public float timeBetweenAttacks;
     public float attackCooldown;
-    public int speed;
+    public float speed;
 	private int spiralDegree;
 
 	// Use this for initialization
 	void Start ()
 	{
 	    rigidbody = gameObject.GetComponent<Rigidbody2D>();
+	    speed = speed*Random.Range(0.7f, 1.3f);
 	}
 
 	void FixedUpdate ()
@@ -124,6 +125,14 @@ public class EnemyBehavior : MonoBehaviour
 			other.gameObject.GetComponent<Unit>().ModifyHealth(-20);
 			SoundManager.i.PlaySound (Sound.Explosion, SoundManager.i.volume);
 			Spawner.i.SpawnObject (Prefab.Explosion, gameObject.transform.position);
+		    if (other.gameObject.GetComponent<PlayerController>() != null)
+		    {
+		        other.gameObject.GetComponent<PlayerController>().DamageVisual();
+		    }
+		    else
+		    {
+                other.gameObject.GetComponent<FusedPlayer>().DamageVisual();
+            }
 			Destroy(gameObject);
 		}
 	}
