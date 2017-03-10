@@ -102,8 +102,8 @@ public class PlayerController : MonoBehaviour
     public void AttackType0()
     {
 		//SoundManager.i.PlaySound (Sound.Shot1, 0.5f);
-        Spawner.i.SpawnPlayerBullet(gameObject.transform.position + Vector3.right + Vector3.up);
-        Spawner.i.SpawnPlayerBullet(gameObject.transform.position + Vector3.right - Vector3.up);
+        Spawner.i.SpawnPlayerBullet(gameObject.transform.position + Vector3.right + Vector3.up, controllerNumber);
+        Spawner.i.SpawnPlayerBullet(gameObject.transform.position + Vector3.right - Vector3.up, controllerNumber);
     }
 
     //Get player input and move player is applicable

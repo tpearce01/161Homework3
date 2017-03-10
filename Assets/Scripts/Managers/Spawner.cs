@@ -38,11 +38,12 @@ public class Spawner : MonoBehaviour {
 	}
 
 	//Pooled spawn functions
-	public void SpawnPlayerBullet(Vector3 location){
+	public void SpawnPlayerBullet(Vector3 location, int player){
 		for(int i = 0; i < bulletsPlayer.Count; i++){
 			if (!bulletsPlayer [i].activeInHierarchy) {
 				bulletsPlayer [i].transform.position = location;
 				bulletsPlayer [i].SetActive (true);
+				bulletsPlayer [i].GetComponent<DefaultProjectile> ().player = player;
 				break;
 			}
 		}

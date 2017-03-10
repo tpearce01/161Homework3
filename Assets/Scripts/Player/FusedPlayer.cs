@@ -54,7 +54,7 @@ public class FusedPlayer : MonoBehaviour {
 			if (/*KEYBOARD INPUT FOR TESTING ONLY*/Input.GetKey(KeyCode.Mouse0) || Input.GetKey(KeyCode.Space)	//Keyboard input	
 				||	Input.GetButton("A1"))					//Controller input
 			{
-				Weapon(p1at);
+				Weapon(p1at, 1);
 				attackCooldownP1 = TimeBetweenAttacks;
 			}
 		}
@@ -69,7 +69,7 @@ public class FusedPlayer : MonoBehaviour {
 			if (/*KEYBOARD INPUT FOR TESTING ONLY*/Input.GetKey(KeyCode.Mouse0) || Input.GetKey(KeyCode.Space)	//Keyboard input	
 				||	Input.GetButton("A2"))					//Controller input
 			{
-				Weapon(p2at);
+				Weapon(p2at, 2);
 				attackCooldownP2 = TimeBetweenAttacks;
 			}
 		}
@@ -87,25 +87,25 @@ public class FusedPlayer : MonoBehaviour {
 	}
 
 	//Determines what the player 1 weapon does
-	public void Weapon(AttackType at)
+	public void Weapon(AttackType at, int player)
 	{
 		switch((int)at)
 		{
 		case 0:
-			AttackType0();
+			AttackType0(player);
 			break;
 		default:
-			AttackType0();
+			AttackType0(player);
 			break;
 		}
 	}
 
 	//Standard attack
-	public void AttackType0()
+	public void AttackType0(int player)
 	{
 		//SoundManager.i.PlaySound (Sound.Shot1, 0.5f);
-		Spawner.i.SpawnPlayerBullet(gameObject.transform.position + Vector3.right + Vector3.up);
-		Spawner.i.SpawnPlayerBullet(gameObject.transform.position + Vector3.right - Vector3.up);
+		Spawner.i.SpawnPlayerBullet(gameObject.transform.position + Vector3.right + Vector3.up, player);
+		Spawner.i.SpawnPlayerBullet(gameObject.transform.position + Vector3.right - Vector3.up, player);
 	}
 
 	//Get player input and move player is applicable
