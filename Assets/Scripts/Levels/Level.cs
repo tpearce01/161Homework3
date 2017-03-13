@@ -11,9 +11,11 @@ public abstract class Level : MonoBehaviour
     public float fusedHealth;
     private bool fused;
     private bool gameOver;
+    public int[] playerScore;
 
     void Awake()
     {
+        playerScore = new int[2];
         i = this;
         totalHealth = 200;
         fusedHealth = 100;
@@ -26,18 +28,21 @@ public abstract class Level : MonoBehaviour
         if (GameManager.i.GetReady()[0])
         {
             Spawner.i.SpawnObject(Prefab.Player1, new Vector3(-10,5,0));
+            i.playerScore[0] = 0;
             playerExists = true;
         }
         if (GameManager.i.GetReady()[1])
         {
             Spawner.i.SpawnObject(Prefab.Player2, new Vector3(-10, -5, 0));
             playerExists = true;
+            i.playerScore[1] = 0;
         }
 
         //If no player exists, default to player 1
         if (!playerExists)
         {
             Spawner.i.SpawnObject(Prefab.Player1, new Vector3(-10, 5, 0));
+            i.playerScore[0] = 0;
         }
 		Spawner.i.SpawnBullets ();
         InitializeLevel();
@@ -176,6 +181,11 @@ public abstract class Level : MonoBehaviour
         }
     }
 
+    public void updateScore(int player , int scoreInc)
+    {
+        i.playerScore[player] += scoreInc;
+        Debug.Log(i.playerScore[player]);
+    }
     public abstract void InitializeLevel();
 	public abstract void UpdateLevel ();
 

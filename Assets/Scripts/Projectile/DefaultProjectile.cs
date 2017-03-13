@@ -20,7 +20,12 @@ public class DefaultProjectile : Projectile
             SoundManager.i.PlaySound(Sound.Hit, SoundManager.i.volume / 4);
             Spawner.i.SpawnObject(Prefab.Sparks, gameObject.transform.position);
             other.gameObject.GetComponent<Unit>().ModifyHealth(-damage);
-			Debug.Log ("Player " + player + " Scored a hit");
+            if(other.gameObject.GetComponent<Unit>().health < 0)
+            {
+                GameObject.FindGameObjectWithTag("EventSystem").GetComponent<LevelByPhase>().updateScore(player, 25);
+            }
+            Debug.Log ("Player " + player + " Scored a hit");
+
 			DestroyProjectile();
         }
 
