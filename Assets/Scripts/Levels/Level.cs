@@ -184,7 +184,7 @@ public abstract class Level : MonoBehaviour
     public void updateScore(int player , int scoreInc)
     {
         i.playerScore[player] += scoreInc;
-        Debug.Log(i.playerScore[player]);
+       // Debug.Log(i.playerScore[player]);
     }
     public abstract void InitializeLevel();
 	public abstract void UpdateLevel ();
