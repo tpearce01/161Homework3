@@ -66,6 +66,21 @@ public class EnemyBehavior : MonoBehaviour
             case 8:
                 CircleDynamic(64);
 			    break;
+			case 9:
+				SpiralWiggle ();
+				break;
+			case 10:
+				SpiralWiggle (16);
+				break;
+			case 11:
+				CircleRandom (4);
+				break;
+			case 12:
+				CircleRandom (8);
+				break;
+			case 13:
+				CircleRandom (16);
+				break;
 			default:
 				StandardSingle ();
 				break;
@@ -119,6 +134,33 @@ public class EnemyBehavior : MonoBehaviour
 		spiralDegree += 15;
 	}
 
+	void SpiralWiggle(){
+		Spawner.i.SpawnEnemyBulletWithRotation(gameObject.transform.position, new Vector3(0,0,spiralDegree));
+		if ((int)Time.time % 2 == 0) {
+			spiralDegree += 1;
+		} else {
+			spiralDegree -= 1;
+		}
+	}
+
+	void SpiralWiggle(int bullets){
+		for (int i = 0; i < bullets; i++) {
+			Spawner.i.SpawnEnemyBulletWithRotation(gameObject.transform.position, new Vector3(0,0,(i * 135 / bullets + 135 / bullets / 2) + spiralDegree - 45));
+		}
+		if ((int)Time.time % 2 == 0) {
+			spiralDegree += 1;
+		} else {
+			spiralDegree -= 1;
+		}
+	}
+
+	void CircleRandom(int bullets){
+		int offset = Random.Range (0, 360);
+		for (int i = 0; i < bullets; i++) {
+			Spawner.i.SpawnEnemyBulletWithRotation(gameObject.transform.position, new Vector3(0,0,(i * 360 / bullets + 360 / bullets / 2) + offset));
+		}
+	}
+
 	//If the unit collides with the player, destroy it
 	void OnCollisionEnter2D(Collision2D other){
 		if(other.gameObject.CompareTag("Player")){
@@ -148,5 +190,10 @@ public enum EnemyAttackType{
 	NoncardinalFour = 5,
 	Spiral = 6,
     CircleThirtyTwo = 7,
-    CircleSixtyFour = 8
+    CircleSixtyFour = 8,
+	SpiralWiggle = 9,
+	SpiralWiggleSixteen = 10,
+	CircleFourRandom = 11,
+	CircleEightRandom = 12,
+	CircleSixteenRandom = 13
 };

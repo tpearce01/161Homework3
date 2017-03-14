@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour {
 
 	public static GameManager i;                        //Static reference to GameManager
 	List<GameObject> players = new List<GameObject>();  //List of players in the scene
-    bool[] ready = new bool[2];                         //Determines which of the 2 players are ready
+    bool[] ready;                         //Determines which of the 2 players are ready
     public int level;
 	public int[] score;
 
@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour {
 			i = this;
 		    level = 1;
 		    score = new int[2];
+			ready = new bool[2];   
 		}
 	}
 
@@ -48,7 +49,10 @@ public class GameManager : MonoBehaviour {
 
     public bool[] GetReady()
     {
-        return ready;
+		if (!ready [0] && !ready [1]) {
+			ready [0] = true;
+		}
+		return ready;
     }
 
 	public void ResetScore(){
