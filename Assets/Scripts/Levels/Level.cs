@@ -6,21 +6,31 @@ public abstract class Level : MonoBehaviour
 {
     public static Level i;
     private bool playerExists;  //Ensures at least 1 player exists
-	//public List<float> storedPlayerHealth = new List<float>();
     public float totalHealth;
     public float fusedHealth;
     private bool fused;
     private bool gameOver;
     public int[] playerScore;
+    public int[] lives;
 
     void Awake()
     {
         playerScore = new int[2];
+        lives = new int[2];
         i = this;
         totalHealth = 200;
         fusedHealth = 100;
-        //storedPlayerHealth.Add(100f);
-        //storedPlayerHealth.Add(100f);
+        for (int j = 0; j < lives.Length; j++)
+        {
+            if (GameManager.i.GetReady()[j])
+            {
+                lives[j] = 3;
+            }
+            else
+            {
+                lives[j] = 0;
+            }
+        }
     }
 
     void Start()
@@ -127,7 +137,6 @@ public abstract class Level : MonoBehaviour
 
 		//Remove players
 		for (int i = players.Count - 1; i >= 0; i--) {
-			//storedPlayerHealth.Add (players[i].GetComponent<Unit> ().health);
 		    GameObject toDestroy = GameManager.i.GetPlayers()[i];
 			GameManager.i.RemovePlayer (GameManager.i.GetPlayers () [i]);
 		    Destroy(toDestroy);
@@ -183,8 +192,7 @@ public abstract class Level : MonoBehaviour
 
     public void updateScore(int player , int scoreInc)
     {
-        i.playerScore[player] += scoreInc;
-       // Debug.Log(i.playerScore[player]);
+        i.playerScore[player-1] += scoreInc;
     }
     public abstract void InitializeLevel();
 	public abstract void UpdateLevel ();

@@ -10,6 +10,7 @@ public class Unit : MonoBehaviour
     public float maxHealth;
 	public float health;
 	public float damageModifier = 1;
+    private bool immortal;
 
     void Awake()
     {
@@ -20,27 +21,31 @@ public class Unit : MonoBehaviour
     //Modify unit health and update slider value / color
     public void ModifyHealth(float value)
     {
-        health += value * damageModifier;
-		if (health >= maxHealth) {
-			health = maxHealth;
-		}
+        if (!immortal)
+        {
+            health += value*damageModifier;
+            if (health >= maxHealth)
+            {
+                health = maxHealth;
+            }
 
-        healthSlider.value = health/maxHealth;
+            healthSlider.value = health/maxHealth;
 
-        //Color-Based health feedback
-        if (healthSlider.value > .50f)
-        {
-            healthSliderFill.color = Color.Lerp(Color.yellow, Color.green, (healthSlider.value * 2) - 1);
-        }
-        else if (healthSlider.value < 0.5f)
-        {
-            healthSliderFill.color = Color.Lerp(Color.red, Color.yellow, healthSlider.value * 2);
-        }
-        
-        //If dead, kill the unit
-        if (health <= 0)
-        {
-            Kill();
+            //Color-Based health feedback
+            if (healthSlider.value > .50f)
+            {
+                healthSliderFill.color = Color.Lerp(Color.yellow, Color.green, (healthSlider.value*2) - 1);
+            }
+            else if (healthSlider.value < 0.5f)
+            {
+                healthSliderFill.color = Color.Lerp(Color.red, Color.yellow, healthSlider.value*2);
+            }
+
+            //If dead, kill the unit
+            if (health <= 0)
+            {
+                Kill();
+            }
         }
     }
 
@@ -53,6 +58,25 @@ public class Unit : MonoBehaviour
 		}
 		Spawner.i.SpawnObject (Prefab.Explosion, gameObject.transform.position);
         SoundManager.i.PlaySound(Sound.Explosion, SoundManager.i.volume);
+        OnKill();
         Destroy(gameObject);
+    }
+
+    public virtual void OnKill()
+    {
+        //Specialized kill function
+    }
+
+
+    public void SetImmortal(float duration)
+    {
+        StartCoroutine(Immortal(duration));
+    }
+
+    public IEnumerator Immortal(float duration)
+    {
+        immortal = true;
+        yield return new WaitForSeconds(duration);
+        immortal = false;
     }
 }

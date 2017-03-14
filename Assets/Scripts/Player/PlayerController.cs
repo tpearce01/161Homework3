@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     public float TimeBetweenAttacks;    //Time between attacks
     private float attackCooldown;       //Remaining time until the player may attack again
     public Unit stats;                  //Reference to unit script attached to player
-	protected int controllerNumber;		//Controller number associated with this player
+	public int controllerNumber;		//Controller number associated with this player
     private Vector3 finalPos;           //Final position to move player to
 	public bool readyToFuse;
 
@@ -38,6 +38,8 @@ public class PlayerController : MonoBehaviour
         at = AttackType.Standard;
         gameObject.GetComponent<Unit>().health = Level.i.totalHealth / 2;
         gameObject.GetComponent<Unit>().ModifyHealth(0);
+        gameObject.GetComponent<Unit>().SetImmortal(2);
+        StartCoroutine(ImmortalVisualRoutine(2));
     }
 
 	void Fusion(){
@@ -159,6 +161,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+
     public void DamageVisual()
     {
         StartCoroutine(DamageVisualRoutine());
@@ -166,12 +169,10 @@ public class PlayerController : MonoBehaviour
 
     public IEnumerator DamageVisualRoutine()
     {
-        Debug.Log("Coroutine start");
         bool isRed = false;
         SpriteRenderer sr = gameObject.transform.FindChild("Sprite").GetComponent<SpriteRenderer>();
         for (int j = 0; j < 5; j++)
         {
-            Debug.Log("Inside coroutine");
             if (isRed)
             {
                 sr.color = Color.gray;
@@ -184,7 +185,28 @@ public class PlayerController : MonoBehaviour
             }
             yield return new WaitForSeconds(.05f);
         }
-        Debug.Log("Exiting coroutine");
+        sr.color = Color.white;
+        yield return null;
+    }
+
+    public IEnumerator ImmortalVisualRoutine(float duration)
+    {
+        bool isRed = false;
+        SpriteRenderer sr = gameObject.transform.FindChild("Sprite").GetComponent<SpriteRenderer>();
+        for (int j = 0; j < duration/.05f; j++)
+        {
+            if (isRed)
+            {
+                sr.color = Color.white;
+                isRed = false;
+            }
+            else
+            {
+                sr.color = Color.clear;
+                isRed = true;
+            }
+            yield return new WaitForSeconds(.05f);
+        }
         sr.color = Color.white;
         yield return null;
     }

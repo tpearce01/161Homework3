@@ -22,9 +22,9 @@ public class DefaultProjectile : Projectile
             other.gameObject.GetComponent<Unit>().ModifyHealth(-damage);
             if(other.gameObject.GetComponent<Unit>().health < 0)
             {
-                GameObject.FindGameObjectWithTag("EventSystem").GetComponent<LevelByPhase>().updateScore(player, 25);
+                Level.i.updateScore(player, 25);
+                HUDManager.i.UpdateScore();
             }
-            Debug.Log ("Player " + player + " Scored a hit");
 
 			DestroyProjectile();
         }

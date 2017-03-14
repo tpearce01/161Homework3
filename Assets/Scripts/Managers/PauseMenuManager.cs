@@ -40,6 +40,15 @@ public class PauseMenuManager : MonoBehaviour
         SceneManager.LoadScene("Level" + GameManager.i.level.ToString() + "Intro");
     }
 
+    public void ToMainMenu()
+    {
+        Time.timeScale = 1;
+        SoundManager.i.EndAllSound();
+        GameManager.i.level = 1;
+        GameManager.i.score = new int[2];
+        SceneManager.LoadScene("main_menu");
+    }
+
 	public void Quit(){
 		Application.Quit ();
 	}
