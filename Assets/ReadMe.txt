@@ -19,20 +19,27 @@ we want players to form a connection with their teammate and interact with them.
 Code References:
 
 Asset References:
-1.Spacepirate1.png
+Spacepirate1.png
 http://bluefley.cgsociety.org/
 
-2.spacepirate2.png
+spacepirate2.png
 http://forum.mongoosepublishing.com/viewtopic.php?f=89&t=105105
 
-3.Explosion sounds
+Explosion sounds
 https://www.youtube.com/watch?v=xpI-RpfdSBA
 
-4.Various effects sounds
+Various effects sounds
 https://www.youtube.com/watch?v=brwI__MZZNk
 
 Various soundtracks
-5.Blues Saraceno (https://www.youtube.com/watch?v=IMrAWgTHpO0)
-6.Andy Hall and Buzz Chesnut (https://www.youtube.com/watch?v=TeDSgDT6ULA)
-7.Raphael Lake (https://www.youtube.com/watch?v=yueimJaYQYc)
+Blues Saraceno (https://www.youtube.com/watch?v=IMrAWgTHpO0)
+Andy Hall and Buzz Chesnut (https://www.youtube.com/watch?v=TeDSgDT6ULA)
+Raphael Lake (https://www.youtube.com/watch?v=yueimJaYQYc)
+Distant Diner (https://www.youtube.com/watch?v=rXP7OlPB-wU)
+
+Warp Speed
+https://www.youtube.com/watch?v=G1n4j1iO2gw
+
+Xbox Controller Image
+http://www.clker.com/clipart-xbox-controller.html
 
