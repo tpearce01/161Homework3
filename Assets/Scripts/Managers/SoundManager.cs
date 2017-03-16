@@ -115,5 +115,6 @@ public enum Sound{
     Level1Audio = 4,
     StoryAudio2 = 5,
     StoryAudio3 = 6,
-    Level2Audio = 7
+    Level2Audio = 7,
+	WarpSpeed = 8
 };
