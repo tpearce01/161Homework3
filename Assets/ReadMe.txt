@@ -2,7 +2,7 @@ Game 3 Submission
 -----------------
 Teammates:
 1. <hgquach> : <49684554>
-2. <UCINETID> : <STUDENT ID NUMBER>
+2. <Tpearce> : <89678177>
 
 Repository:
 <https://github.com/tpearce01/161Homework3> - Please add kyle-copeland as a collaberator if your git repo is private.
@@ -13,12 +13,10 @@ Players can fuse their ships together to form a stronger and better machine of w
 beat the game.
 
 Player Experience:
-We want players to feel excitment and amusement while they squadrons of enemies fighter together. Furthermore because its a cooperative game, 
+We want players to feel excitement and amusement while they squadrons of enemies fighter together. Furthermore because its a cooperative game, 
 we want players to form a connection with their teammate and interact with them. 
 
 Code References:
-1. <{ScriptName} | Lines {line numbers where code is located} | {link to source}>
-2. <{ScriptName} | Lines {line numbers where code is located} | {link to source}>
 
 Asset References:
 1.Spacepirate1.png
