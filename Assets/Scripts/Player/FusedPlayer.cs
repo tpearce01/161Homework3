@@ -125,7 +125,6 @@ public class FusedPlayer : MonoBehaviour {
 	}
 
 	void OnDestroy(){
-        Level.i.FusedDeath();
         GameManager.i.RemovePlayer (gameObject);
 	}
 

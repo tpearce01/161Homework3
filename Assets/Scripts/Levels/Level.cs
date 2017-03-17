@@ -8,7 +8,7 @@ public abstract class Level : MonoBehaviour
     private bool playerExists;  //Ensures at least 1 player exists
     public float totalHealth;
     public float fusedHealth;
-    private bool fused;
+	public bool fused;
     private bool gameOver;
     public int[] playerScore;
     public int[] lives;
@@ -68,7 +68,10 @@ public abstract class Level : MonoBehaviour
 	    }
 	    else
 	    {
-	        CheckFusion();
+			if (fusedHealth > 0) {
+				Debug.Log ("Check fusion: " + fusedHealth);
+				CheckFusion ();
+			}
 	    }
 	    UpdateLevel ();
 	}
@@ -162,16 +165,7 @@ public abstract class Level : MonoBehaviour
 	    fused = false;
 	}
 
-    public void FusedDeath()
-    {
-        List<GameObject> players = GameManager.i.GetPlayers();
-        //Instantiate player1, player2
-        Spawner.i.SpawnObject(Prefab.Player1, players[0].transform.position + transform.up);
-        Spawner.i.SpawnObject(Prefab.Player2, players[0].transform.position - transform.up);
-
-        //Calculate health
-        fusedHealth = GameManager.i.GetPlayers()[0].GetComponent<Unit>().health;
-    }
+    
 
     void CheckUnfuse()
     {
