@@ -17,7 +17,7 @@ public class LevelByPhase : Level {
 		timer = startDelay;
 	    if (audioToPlay != null)
 	    {
-	        SoundManager.i.PlaySound(audioToPlay, SoundManager.i.volume/2);
+	        SoundManager.i.PlaySoundLoop(audioToPlay, SoundManager.i.volume/2);
 	    }
 	}
 

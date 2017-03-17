@@ -63,6 +63,15 @@ public class SoundManager : MonoBehaviour {
 		clipsPlaying.Add (source);
 	}
 
+	public void PlaySoundLoop(Sound clipNumber, float volume){
+		AudioSource source = gameObject.AddComponent<AudioSource> ();
+		source.clip = clips [(int)clipNumber];
+		source.volume = volume;
+		source.Play ();
+		source.loop = true;
+		clipsPlaying.Add (source);
+	}
+
 	public void EndSoundAbrupt(string soundName){
 		AudioSource[] sources = gameObject.GetComponents<AudioSource>();
 		for (int i = 0; i < sources.Length; i++) {

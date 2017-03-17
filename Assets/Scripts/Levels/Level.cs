@@ -69,7 +69,6 @@ public abstract class Level : MonoBehaviour
 	    else
 	    {
 			if (fusedHealth > 0) {
-				Debug.Log ("Check fusion: " + fusedHealth);
 				CheckFusion ();
 			}
 	    }

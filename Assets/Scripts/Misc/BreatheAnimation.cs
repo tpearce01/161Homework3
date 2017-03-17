@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class BreatheAnimation : MonoBehaviour
 {
     public List<GameObject> obj;
-	
+
 	// Update is called once per frame
 	void Update ()
 	{

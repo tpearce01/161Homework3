@@ -28,12 +28,5 @@ public class DefaultProjectile : Projectile
 
 			DestroyProjectile();
         }
-
-        if ( other.gameObject.CompareTag("Turret"))
-        {
-            Spawner.i.SpawnObject(Prefab.Sparks, gameObject.transform.position);
-            other.gameObject.GetComponent<Turret>().ModifyHealth(-damage);
-            DestroyProjectile();
-        }
     }
 }

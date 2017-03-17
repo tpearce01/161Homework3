@@ -30,7 +30,7 @@ public class StorySceneManager : MonoBehaviour
         rightSpeaker.preserveAspect = true;
         gameObject.transform.FindChild("Background").GetComponent<Image>().sprite = background;
         storyText = gameObject.transform.FindChild("StoryText").GetComponent<Text>();
-        SoundManager.i.PlaySound(backgroundMusic, SoundManager.i.volume);
+        SoundManager.i.PlaySoundLoop(backgroundMusic, SoundManager.i.volume);
         NextChat();
     }
 
