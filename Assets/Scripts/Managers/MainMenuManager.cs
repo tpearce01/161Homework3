@@ -22,23 +22,31 @@ public class MainMenuManager : MonoBehaviour {
 	}
 
 	void Update(){
-		if (Input.GetButtonDown ("Start1") || Input.GetButtonDown ("Start2") || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return)) {
+		if (Input.GetButtonDown ("Start1") || Input.GetButtonDown("Start2") || Input.GetButtonDown("A1") || Input.GetButtonDown("A2") || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return)) {
 			LoadScene ();
 		}
-		if ((Input.GetAxis ("LSX1") < -.2f || Input.GetKeyDown(KeyCode.S)) && !inputReceived) {
-			currentChoice++;
-			if (currentChoice > 2) {
-				currentChoice = 0;
-			}
-			ChangeSelectedButtonVisual (buttons [currentChoice]);
-			inputReceived = true;
-		} else if ((Input.GetAxis ("LSX1") > .2f || Input.GetKeyDown(KeyCode.W)) && !inputReceived) {
-			currentChoice--;
-			if (currentChoice < 0) {
-				currentChoice = 2;
-			}
-			ChangeSelectedButtonVisual (buttons [currentChoice]);
-			inputReceived = true;
+		if ((Input.GetAxis("LSY1") > .2f || Input.GetAxis("LSY2") > .2f || Input.GetKeyDown(KeyCode.S))) {
+		    if (!inputReceived)
+		    {
+		        currentChoice++;
+		        if (currentChoice > 2)
+		        {
+		            currentChoice = 0;
+		        }
+		        ChangeSelectedButtonVisual(buttons[currentChoice]);
+		        inputReceived = true;
+		    }
+		} else if ((Input.GetAxis("LSY1") < -.2f || Input.GetAxis("LSY2") < -.2f || Input.GetKeyDown(KeyCode.W))) {
+		    if (!inputReceived)
+		    {
+		        currentChoice--;
+		        if (currentChoice < 0)
+		        {
+		            currentChoice = 2;
+		        }
+		        ChangeSelectedButtonVisual(buttons[currentChoice]);
+		        inputReceived = true;
+		    }
 		} else {
 			inputReceived = false;
 		}

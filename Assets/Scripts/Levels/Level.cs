@@ -59,7 +59,7 @@ public abstract class Level : MonoBehaviour
     }
 
 	void Update(){
-		if (Input.GetKeyDown (KeyCode.Escape)) {
+		if (Input.GetKeyDown (KeyCode.Escape) || Input.GetButtonDown("Start1") || Input.GetButtonDown("Start2")) {
 			Spawner.i.SpawnObject (Prefab.PauseMenu, Vector3.zero);
 		}
 	    if (fused)

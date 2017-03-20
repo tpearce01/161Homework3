@@ -49,9 +49,6 @@ public class GameManager : MonoBehaviour {
 
     public bool[] GetReady()
     {
-		if (!ready [0] && !ready [1]) {
-			ready [0] = true;
-		}
 		return ready;
     }
 
