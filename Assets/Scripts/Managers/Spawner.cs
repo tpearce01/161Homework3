@@ -2,34 +2,43 @@
 using System.Collections;
 using System.Collections.Generic;
 
+/*********************************************************************************
+ * class Spawner
+ * 
+ * Function: Handles the instantiation of all prefabs
+ *********************************************************************************/
 public class Spawner : MonoBehaviour {
 
-	public static Spawner i;								    //Static reference
+	public static Spawner i;			                            //Static reference
 
-	public GameObject[] prefabs;								//List of all prefabs that may be instantiated
-	GameObject activeObject;
+	public GameObject[] prefabs;								    //List of all prefabs that may be instantiated
+	GameObject activeObject;                                        //Most recently spawned object
 
 	//Pooled player bullets
-	public List<GameObject> bulletsPlayer = new List<GameObject>();
-	public int bulletsPlayerToSpawn;
-	//int bulletsPlayerIndex;
+	public List<GameObject> bulletsPlayer = new List<GameObject>(); //List of all player bullets
+	public int bulletsPlayerToSpawn;                                //Number of bullets to spawn for the player
 
 	//Pooled enemy bullets
-	public List<GameObject> bulletsEnemy = new List<GameObject> ();
-	public int bulletsEnemyToSpawn;
-	//int bulletsEnemyIndex;
+	public List<GameObject> bulletsEnemy = new List<GameObject> (); //List of all enemy bullets
+	public int bulletsEnemyToSpawn;                                 //Number of bullets to spawn for enemies
 
+    //Get static reference
 	void Awake(){
 		i = this;
 	}
 
-	//Spawn object pool of bullets
+	/// <summary>
+    /// Generate object pool of bullets
+    /// </summary>
 	public void SpawnBullets(){
+        //Player bullets
 		for (int i = 0; i < bulletsPlayerToSpawn; i++) {
 			GameObject obj = SpawnObject (Prefab.Shot1, Vector3.zero);
 			obj.SetActive(false);
 			bulletsPlayer.Add (obj);
 		}
+
+        //Enemy bullets
 		for (int i = 0; i < bulletsEnemyToSpawn; i++) {
 			GameObject obj = SpawnObject (Prefab.Shot2, Vector3.zero);
 			obj.SetActive(false);
@@ -37,7 +46,11 @@ public class Spawner : MonoBehaviour {
 		}
 	}
 
-	//Pooled spawn functions
+	/// <summary>
+    /// Spawn a single player bullet
+    /// </summary>
+    /// <param name="location"></param>
+    /// <param name="player"></param>
 	public void SpawnPlayerBullet(Vector3 location, int player){
 		for(int i = 0; i < bulletsPlayer.Count; i++){
 			if (!bulletsPlayer [i].activeInHierarchy) {
@@ -48,6 +61,11 @@ public class Spawner : MonoBehaviour {
 			}
 		}
 	}
+
+    /// <summary>
+    /// Spawn a single enemy bullet
+    /// </summary>
+    /// <param name="location"></param>
 	public void SpawnEnemyBullet(Vector3 location){
 		for (int i = 0; i < bulletsEnemy.Count; i++) {
 			if (!bulletsEnemy [i].activeInHierarchy) {
@@ -58,6 +76,12 @@ public class Spawner : MonoBehaviour {
 			}
 		}
 	}
+
+    /// <summary>
+    /// Spawn a single enemy bullet at an angle
+    /// </summary>
+    /// <param name="location"></param>
+    /// <param name="rotation"></param>
 	public void SpawnEnemyBulletWithRotation(Vector3 location, Vector3 rotation){
 		for (int i = 0; i < bulletsEnemyToSpawn; i++) {
 			if (!bulletsEnemy [i].activeInHierarchy) {
@@ -69,6 +93,11 @@ public class Spawner : MonoBehaviour {
 			}
 		}
 	}
+
+    /// <summary>
+    /// Spawn a single enemy bullet directed at a random player
+    /// </summary>
+    /// <param name="location"></param>
 	public void SpawnEnemyBulletTowardPlayer(Vector3 location){
 		for (int i = 0; i < bulletsEnemyToSpawn; i++) {
 			if (!bulletsEnemy [i].activeInHierarchy) {
@@ -81,33 +110,73 @@ public class Spawner : MonoBehaviour {
 		}
 	}
 
-	//Instantiate an object at the specified location and add it to the list of active objects
+	/// <summary>
+    /// Instantiate a prefab at the specified location
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="location"></param>
+    /// <returns></returns>
 	public GameObject SpawnObject(int index, Vector3 location){
 		activeObject = Instantiate (prefabs [index], location, Quaternion.identity) as GameObject;
 		return activeObject;
 	}
+
+    /// <summary>
+    /// Spawn a prefab at the specified location
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="location"></param>
+    /// <returns></returns>
 	public GameObject SpawnObject(Prefab obj, Vector3 location){
 		return SpawnObject((int)obj, location);
 	}
 
-    //Instantiate an object at position with rotation
+    /// <summary>
+    /// Spawn a prefab at the specified location at an angle
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="location"></param>
+    /// <param name="rotation"></param>
+    /// <returns></returns>
 	public GameObject SpawnObjectWithRotation(int index, Vector3 location, Vector3 rotation)
     {
 		activeObject = Instantiate(prefabs[index], location, Quaternion.identity) as GameObject;
         activeObject.transform.Rotate(rotation);
 		return activeObject;
     }
+
+    /// <summary>
+    /// Spawn a prefab at the specified location at an angle
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="location"></param>
+    /// <param name="rotation"></param>
+    /// <returns></returns>
 	public GameObject SpawnObjectWithRotation(Prefab obj, Vector3 location, Vector3 rotation)
     {
         return SpawnObjectWithRotation((int)obj, location, rotation);
     }
 
-    //Spawn a bullet with modified speed
+    /// <summary>
+    /// Spawn a bullet with a modified speed
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="location"></param>
+    /// <param name="speed"></param>
+    /// <returns></returns>
 	public GameObject SpawnModifiedBullet(Prefab obj, Vector3 location, int speed)
     {
         return SpawnModifiedBullet((int) obj, location, speed);
 
     }
+
+    /// <summary>
+    /// Spawn a bullet with a modified speed
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="location"></param>
+    /// <param name="speed"></param>
+    /// <returns></returns>
 	public GameObject SpawnModifiedBullet(int index, Vector3 location, int speed)
     {
 		activeObject = Instantiate(prefabs[index], location, Quaternion.identity) as GameObject;
@@ -115,11 +184,27 @@ public class Spawner : MonoBehaviour {
 		return activeObject;
     }
 
-    //Spawn a rotated bullet with modified speed
+    /// <summary>
+    /// Spawn a rotated bullet with a modified speed
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="location"></param>
+    /// <param name="speed"></param>
+    /// <param name="rotation"></param>
+    /// <returns></returns>
 	public GameObject SpawnModifiedBulletRotated(Prefab obj, Vector3 location, int speed, Vector3 rotation)
     {
         return SpawnModifiedBulletRotated((int)obj, location, speed, rotation);
     }
+
+    /// <summary>
+    /// Spawn a rotated bullet with a modified speed
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="location"></param>
+    /// <param name="speed"></param>
+    /// <param name="rotation"></param>
+    /// <returns></returns>
 	public GameObject SpawnModifiedBulletRotated(int index, Vector3 location, int speed, Vector3 rotation)
     {
 		activeObject = Instantiate(prefabs[index], location, Quaternion.identity) as GameObject;
@@ -128,28 +213,61 @@ public class Spawner : MonoBehaviour {
 		return activeObject;
     }
 
-	//Spawn object, rotated to face a random player. -transform.right faces the player. transform.right faces away from the player
-	public GameObject SpawnObjectTowardRandomPlayer(Prefab obj, Vector3 location){
+    /// <summary>
+    /// Spawn object, rotated to face a random player. -transform.right faces the player. transform.right faces away from the player
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="location"></param>
+    /// <returns></returns>
+    public GameObject SpawnObjectTowardRandomPlayer(Prefab obj, Vector3 location){
 		return SpawnObjectTowardRandomPlayer ((int)obj, location);
 	}
+
+    /// <summary>
+    /// Spawn object, rotated to face a random player. -transform.right faces the player. transform.right faces away from the player
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="location"></param>
+    /// <returns></returns>
 	public GameObject SpawnObjectTowardRandomPlayer(int index, Vector3 location){
 		activeObject = Instantiate(prefabs[index], location, Quaternion.identity) as GameObject;
 		activeObject.transform.right = activeObject.transform.position - GameManager.i.GetPlayers ()[Random.Range(0,GameManager.i.GetPlayers().Count)].transform.position;
 		return activeObject;
 	}
 
-	//Spawn object, rotated to face a random player. transform.right faces the player
-	public GameObject SpawnObjectTowardRandomPlayerTrue(Prefab obj, Vector3 location){
+    /// <summary>
+    /// Spawn object, rotated to face a random player. transform.right faces the player
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="location"></param>
+    /// <returns></returns>
+    public GameObject SpawnObjectTowardRandomPlayerTrue(Prefab obj, Vector3 location){
 		return SpawnObjectTowardRandomPlayer ((int)obj, location);
 	}
+
+    /// <summary>
+    /// Spawn object, rotated to face a random player. transform.right faces the player
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="location"></param>
+    /// <returns></returns>
 	public GameObject SpawnObjectTowardRandomPlayerTrue(int index, Vector3 location){
 		activeObject = Instantiate(prefabs[index], location, Quaternion.identity) as GameObject;
 		activeObject.transform.right = GameManager.i.GetPlayers ()[Random.Range(0,GameManager.i.GetPlayers().Count)].transform.position - activeObject.transform.position;
 		return activeObject;
 	}
 
-	//Creates an enemy with customized Unit and EnemyBehavior fields. May also customize Sprite
-	public GameObject SpawnCustomEnemy(Vector3 location, int maxHealth, EnemyAttackType attackType, float timeBetweenAttacks, float attackCooldown, int speed){
+    /// <summary>
+    /// Creates an enemy with customized Unit and EnemyBehavior fields. May also customize Sprite
+    /// </summary>
+    /// <param name="location"></param>
+    /// <param name="maxHealth"></param>
+    /// <param name="attackType"></param>
+    /// <param name="timeBetweenAttacks"></param>
+    /// <param name="attackCooldown"></param>
+    /// <param name="speed"></param>
+    /// <returns></returns>
+    public GameObject SpawnCustomEnemy(Vector3 location, int maxHealth, EnemyAttackType attackType, float timeBetweenAttacks, float attackCooldown, int speed){
         activeObject = Instantiate(prefabs[(int)Prefab.Enemy], location, Quaternion.identity) as GameObject;
 		activeObject.GetComponent<Unit> ().maxHealth = maxHealth;
 		activeObject.GetComponent<Unit> ().ModifyHealth (maxHealth);
@@ -159,7 +277,18 @@ public class Spawner : MonoBehaviour {
 		activeObject.GetComponent<EnemyBehavior> ().speed = speed;
 		return activeObject;
 	}
-    
+
+    /// <summary>
+    /// Creates an enemy with customized Unit and EnemyBehavior fields. May also customize Sprite
+    /// </summary>
+    /// <param name="location"></param>
+    /// <param name="maxHealth"></param>
+    /// <param name="attackType"></param>
+    /// <param name="timeBetweenAttacks"></param>
+    /// <param name="attackCooldown"></param>
+    /// <param name="speed"></param>
+    /// <param name="sprite"></param>
+    /// <returns></returns>
     public GameObject SpawnCustomEnemy(Vector3 location, int maxHealth, EnemyAttackType attackType, float timeBetweenAttacks, float attackCooldown, int speed, Sprite sprite){
 		activeObject = Instantiate(prefabs[(int)Prefab.Enemy], location, Quaternion.identity) as GameObject;
 		activeObject.GetComponent<Unit> ().maxHealth = maxHealth;
@@ -172,6 +301,15 @@ public class Spawner : MonoBehaviour {
 		return activeObject;
 	}
 
+    /// <summary>
+    /// Spawn a boss component (Turret)
+    /// </summary>
+    /// <param name="location"></param>
+    /// <param name="maxHealth"></param>
+    /// <param name="attackType"></param>
+    /// <param name="timeBetweenAttacks"></param>
+    /// <param name="attackCooldown"></param>
+    /// <returns></returns>
     public GameObject SpawnBossComponent(Vector3 location, int maxHealth, EnemyAttackType attackType, float timeBetweenAttacks, float attackCooldown)
     {
         activeObject = SpawnCustomEnemy(location, maxHealth, attackType, timeBetweenAttacks, attackCooldown, 0);

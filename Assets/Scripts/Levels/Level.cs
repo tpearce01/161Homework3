@@ -2,191 +2,88 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*********************************************************************************
+ * abstract class Level
+ * 
+ * Function: Level class holds all vital functions and data relevant to creating
+ *      and running a level. Parent to class LevelByPhase. 
+ *********************************************************************************/
 public abstract class Level : MonoBehaviour
 {
-    public static Level i;
+    public static Level i;      //Allows for quick referencing to the current level
     private bool playerExists;  //Ensures at least 1 player exists
-    public float totalHealth;
-    public float fusedHealth;
-	public bool fused;
-    private bool gameOver;
-    public int[] playerScore;
-    public int[] lives;
+    private bool gameOver;      //Determines when the game has ended
+    public int playerScore;   //Tracks player scores
+    public int lives;         //Tracks player lives
+    [SerializeField] private int startingLives = 3;
 
+    // Reset player score and lives. Get static reference to current level.
     void Awake()
     {
-        playerScore = new int[2];
-        lives = new int[2];
+        playerScore = 0;
+        lives = startingLives;
         i = this;
-        totalHealth = 200;
-        fusedHealth = 100;
-        for (int j = 0; j < lives.Length; j++)
-        {
-            if (GameManager.i.GetReady()[j])
-            {
-                lives[j] = 3;
-            }
-            else
-            {
-                lives[j] = 0;
-            }
-        }
     }
 
+    // Spawn the player. Spawn object pool of bullets. Initialize level.
     void Start()
     {
-        if (GameManager.i.GetReady()[0])
-        {
-            Spawner.i.SpawnObject(Prefab.Player1, new Vector3(-10,5,0));
-            i.playerScore[0] = 0;
-            playerExists = true;
-        }
-        if (GameManager.i.GetReady()[1])
-        {
-            Spawner.i.SpawnObject(Prefab.Player2, new Vector3(-10, -5, 0));
-            playerExists = true;
-            i.playerScore[1] = 0;
-        }
+        //Spawn player 1
+        Spawner.i.SpawnObject(Prefab.Player1, new Vector3(-10,5,0));
+        playerExists = true;
+
 
         //If no player exists, default to player 1
         if (!playerExists)
         {
             Spawner.i.SpawnObject(Prefab.Player1, new Vector3(-10, 5, 0));
-            i.playerScore[0] = 0;
+            playerExists = true;
         }
+
+        //Spawn object pool
 		Spawner.i.SpawnBullets ();
+
+        //Initialize level
         InitializeLevel();
     }
 
+    //Check for pause input
 	void Update(){
-		if (Input.GetKeyDown (KeyCode.Escape) || Input.GetButtonDown("Start1") || Input.GetButtonDown("Start2")) {
+		if (Input.GetKeyDown (KeyCode.Escape) || Input.GetButtonDown("Start1")) {
 			Spawner.i.SpawnObject (Prefab.PauseMenu, Vector3.zero);
 		}
-	    if (fused)
-	    {
-	        CheckUnfuse();
-	    }
-	    else
-	    {
-			if (fusedHealth > 0) {
-				CheckFusion ();
-			}
-	    }
 	    UpdateLevel ();
 	}
 
+    //Check for game over condition
     void LateUpdate()
     {
         CheckGameOver();
     }
 
-    void CheckFusion(){
-        if (GameManager.i.GetPlayers().Count > 1)
-        {
-            bool canFuse = true;
-			List<GameObject> players = GameManager.i.GetPlayers ();
-            for (int i = 0; i < GameManager.i.GetPlayers().Count; i++)
-            {
-				if (!players[i].GetComponent<PlayerController>().readyToFuse)
-                {
-                    canFuse = false;
-                    break;
-                }
-            }
-
-
-            if (canFuse)
-            {
-                Vector2 originalPosition = Vector2.zero;
-                //Check the distance between the players
-				if (players.Count > 0)
-                {
-					originalPosition = players[0].transform.position;
-                }
-
-                bool initiateFusion = true;
-				for (int i = 1; i < players.Count; i++)
-                {
-					if (Vector2.Distance(originalPosition, players[i].transform.position) > 2)
-                    {
-                        initiateFusion = false;
-                        break;
-                    }
-                }
-                if (initiateFusion)
-                {
-					for (int i = 0; i < players.Count; i++)
-                    {
-						players[i].GetComponent<PlayerController>().readyToFuse = false;
-                    }
-                    Fuse();
-                }
-            }
-        }
-    }
-
-	void Fuse(){
-        //Instantiate fused ship at player 1 location
-        Spawner.i.SpawnObject (Prefab.FusedPlayer, GameManager.i.GetPlayers () [0].transform.position);
-
-		List<GameObject> players = GameManager.i.GetPlayers ();
-			
-        //Calculate health
-	    totalHealth = 0;
-		for (int i = 0; i < players.Count; i++) {
-			totalHealth += players[i].GetComponent<Unit> ().health;
-		}
-
-		//Remove players
-		for (int i = players.Count - 1; i >= 0; i--) {
-		    GameObject toDestroy = GameManager.i.GetPlayers()[i];
-			GameManager.i.RemovePlayer (GameManager.i.GetPlayers () [i]);
-		    Destroy(toDestroy);
-        }
-
-        fused = true;
-	}
-
-	public void Unfuse(){
-		List<GameObject> players = GameManager.i.GetPlayers ();
-		//Instantiate player1, player2
-		Spawner.i.SpawnObject(Prefab.Player1, players[0].transform.position + transform.up);
-		Spawner.i.SpawnObject(Prefab.Player2, players[0].transform.position - transform.up);
-
-		//Calculate health
-	    fusedHealth = GameManager.i.GetPlayers()[0].GetComponent<Unit>().health;
-
-		//Remove fused ship
-	    GameObject toDesroy = GameManager.i.GetPlayers()[0];
-		GameManager.i.RemovePlayer(GameManager.i.GetPlayers()[0]);
-        Destroy(toDesroy);
-
-	    fused = false;
-	}
-
-    
-
-    void CheckUnfuse()
-    {
-        if (Input.GetButtonDown("Y1") || Input.GetButtonDown("Y2")/*TESTING*/ || Input.GetKeyDown(KeyCode.Y)/*TESTING*/ )
-        {
-            Unfuse();
-        }
-    }
-
+    /// <summary>
+    /// Checks if the game should end
+    /// </summary>
     void CheckGameOver()
     {
-        if (!gameOver && GameManager.i.GetPlayers().Count == 0)
+        if (!gameOver && lives <= 0)
         {
             Spawner.i.SpawnObject(Prefab.GameOverMenu, Vector3.zero);
             gameOver = true;
         }
     }
 
-    public void updateScore(int player , int scoreInc)
+    /// <summary>
+    /// Update the player's score
+    /// </summary>
+    /// <param name="player"></param>
+    /// <param name="scoreInc"></param>
+    public void updateScore(int scoreInc)
     {
-        i.playerScore[player-1] += scoreInc;
+        i.playerScore += scoreInc;
     }
+
+    //Abstract functions for custom initialization and updates
     public abstract void InitializeLevel();
 	public abstract void UpdateLevel ();
 

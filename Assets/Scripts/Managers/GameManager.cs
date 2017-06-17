@@ -2,14 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*********************************************************************************
+ * class GameManager
+ * 
+ * Function: 
+ *********************************************************************************/
 public class GameManager : MonoBehaviour {
 
 	public static GameManager i;                        //Static reference to GameManager
 	List<GameObject> players = new List<GameObject>();  //List of players in the scene
-    bool[] ready;                         //Determines which of the 2 players are ready
-    public int level;
-	public int[] score;
+    bool ready;                                         //Determines if the player is ready
+    public int level;                                   //Current level, begins at level 1
+	public int score;                                   //Total player score
 
+    //Ensures there are no duplicate GameManager objects then initializes persistent 
+    //game variables
 	void Awake () {
 		if (GameObject.FindGameObjectsWithTag ("GameManager").Length > 1) {
 			Destroy (gameObject);
@@ -17,43 +24,66 @@ public class GameManager : MonoBehaviour {
 			DontDestroyOnLoad (gameObject);
 			i = this;
 		    level = 1;
-		    score = new int[2];
-			ready = new bool[2];   
+		    score = 0;
+			ready = false;   
 		}
 	}
 
-    //Adds a player to the list of players
+    /// <summary>
+    /// Adds a player to the list of players.
+    /// </summary>
+    /// <param name="p"></param>
 	public void AddPlayer(GameObject p){
 		players.Add (p);
 	}
 
-    //Remove a player from the list of players
+    /// <summary>
+    /// Remove a player from the list of players
+    /// </summary>
+    /// <param name="p"></param>
 	public void RemovePlayer(GameObject p){
 		players.Remove (p);
 	}
 
-    //Returns all players in the scene
+    /// <summary>
+    /// Gets all players
+    /// </summary>
+    /// <returns></returns>
 	public List<GameObject> GetPlayers(){
 		return players;
 	}
 
-    public void ReadyUp(int index)
+    /// <summary>
+    /// Sets the player ready status to ready
+    /// </summary>
+    public void ReadyUp()
     {
-        ready[index] = true;
+        ready = true;
     }
 
+    /// <summary>
+    /// Sets the player ready status to not ready
+    /// </summary>
+    /// <param name="index"></param>
     public void NotReady(int index)
     {
-        ready[index] = false;
+        ready = false;
     }
 
-    public bool[] GetReady()
+    /// <summary>
+    /// Returns the player ready status
+    /// </summary>
+    /// <returns></returns>
+    public bool GetReady()
     {
 		return ready;
     }
 
+    /// <summary>
+    /// Resets the score to 0
+    /// </summary>
 	public void ResetScore(){
-		score = new int[2];
+		score = 0;
 	}
 
 }

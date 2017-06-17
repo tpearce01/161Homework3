@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*********************************************************************************
+ * class PlayerController
+ * 
+ * Function: Handles player input pertaining to controlling their ship in game.
+ *********************************************************************************/
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D rigidbody;      //Rigidbody
@@ -14,34 +19,44 @@ public class PlayerController : MonoBehaviour
     private Vector3 finalPos;           //Final position to move player to
 	public bool readyToFuse;
 
+    /// <summary>
+    /// Initialize default values and add player to list of players
+    /// </summary>
     void Start()
     {
         Initialize();
 		GameManager.i.AddPlayer (gameObject);
     }
 
+    // Check for shoot input
     void Update()
     {
         Shoot();
-		Fusion ();
+		//Fusion ();
     }
 
+    //Move the player
     void FixedUpdate()
     {
         MovePlayer();
     }
 
-    //Setup default values
+    /// <summary>
+    /// Set up default values
+    /// </summary>
     void Initialize()
     {
         rigidbody = gameObject.GetComponent<Rigidbody2D>();
         at = AttackType.Standard;
-        gameObject.GetComponent<Unit>().health = Level.i.totalHealth / 2;
+        gameObject.GetComponent<Unit>().health = /*Level.i.totalHealth / 2*/ 100;
         gameObject.GetComponent<Unit>().ModifyHealth(0);
         gameObject.GetComponent<Unit>().SetImmortal(2);
         StartCoroutine(ImmortalVisualRoutine(2));
     }
 
+    /// <summary>
+    /// DEPRECATED FUNCTION. INTENDED FOR MULTIPLAYER VERSION
+    /// </summary>
 	void Fusion(){
 		if(Input.GetButtonDown("Y" + controllerNumber)/*TESTING*/  || Input.GetKeyDown(KeyCode.Y)/*TESTING*/ )
         {
@@ -54,7 +69,9 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 
-    //Shoot
+    /// <summary>
+    /// Check for and handle shoot input
+    /// </summary>
     public void Shoot()
     {
         //Rapid-fire primary attack
@@ -82,7 +99,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //Determines what the primary weapon does
+    /// <summary>
+    /// Determines what the primary weapon does
+    /// </summary>
     public void PrimaryWeapon()
     {
         switch((int)at)
@@ -96,7 +115,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //Standard attack
+    /// <summary>
+    /// Standard attack. Straight and forward.
+    /// </summary>
     public void AttackType0()
     {
 		//SoundManager.i.PlaySound (Sound.Shot1, 0.5f);
@@ -104,7 +125,9 @@ public class PlayerController : MonoBehaviour
         Spawner.i.SpawnPlayerBullet(gameObject.transform.position + Vector3.right - Vector3.up, controllerNumber);
     }
 
-    //Get player input and move player is applicable
+    /// <summary>
+    /// Handle player movement input
+    /// </summary>
     public void MovePlayer()
     {
         finalPos = gameObject.transform.position;
@@ -116,10 +139,14 @@ public class PlayerController : MonoBehaviour
         rigidbody.MovePosition(Vector2.MoveTowards(gameObject.transform.position, finalPos, moveSpeed*Time.deltaTime));
     }
 
+    //Remove the player from the list of players when it is destroyed
 	void OnDestroy(){
 		GameManager.i.RemovePlayer (gameObject);
 	}
 
+    /// <summary>
+    /// Gets keyboard input for movement and sets desired position
+    /// </summary>
     void KeyboardInput()
     {
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
@@ -140,6 +167,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Gets controller input for movement and sets desired position
+    /// </summary>
     void ControllerInput()
     {
         Vector2 ls = new Vector2(Input.GetAxis("LSX" + controllerNumber), Input.GetAxis("LSY" + controllerNumber));
@@ -161,16 +191,22 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// Display visual flash. Intended to display when damaged
+    /// </summary>
     public void DamageVisual()
     {
         StartCoroutine(DamageVisualRoutine());
     }
 
+    /// <summary>
+    /// Display visual flash. Intended to display when damaged
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator DamageVisualRoutine()
     {
         bool isRed = false;
-        SpriteRenderer sr = gameObject.transform.FindChild("Sprite").GetComponent<SpriteRenderer>();
+        SpriteRenderer sr = gameObject.transform.Find("Sprite").GetComponent<SpriteRenderer>();
         for (int j = 0; j < 5; j++)
         {
             if (isRed)
@@ -189,10 +225,15 @@ public class PlayerController : MonoBehaviour
         yield return null;
     }
 
+    /// <summary>
+    /// Display visual flash. Intended to display when immortal
+    /// </summary>
+    /// <param name="duration"></param>
+    /// <returns></returns>
     public IEnumerator ImmortalVisualRoutine(float duration)
     {
         bool isRed = false;
-        SpriteRenderer sr = gameObject.transform.FindChild("Sprite").GetComponent<SpriteRenderer>();
+        SpriteRenderer sr = gameObject.transform.Find("Sprite").GetComponent<SpriteRenderer>();
         for (int j = 0; j < duration/.05f; j++)
         {
             if (isRed)
@@ -212,7 +253,7 @@ public class PlayerController : MonoBehaviour
     }
 }
 
-//Improve readability for attack types
+//Enum to improve readability for attack types
 public enum AttackType
 {
     Standard = 0

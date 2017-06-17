@@ -3,29 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*********************************************************************************
+ * class VictoryMenuManager : PauseMenuManager
+ * 
+ * Function: Displays victory stats. Child of PauseMenuManager
+ *********************************************************************************/
 public class VictoryMenuManager : PauseMenuManager
 {
-    public Text[] scoreText = new Text[2];
+    public Text[] scoreText = new Text[2];  //Text objects to write to
 
+    //Display player scores. Reduced functionality to 1 player, resulting in odd code style
     void Start()
     {
-        bool[] ready = GameManager.i.GetReady();
+        bool ready = GameManager.i.GetReady();
+        GameManager.i.score += Level.i.playerScore;
 
-        for (int j = 0; j < GameManager.i.score.Length; j++)
+        if (ready)
         {
-            GameManager.i.score[j] += Level.i.playerScore[j];
+            scoreText[0].text = "Player " + (1) + " Score: " + GameManager.i.score;
         }
-
-        for (int j = 0; j < ready.Length; j++)
+        else
         {
-            if (ready[j])
-            {
-                scoreText[j].text = "Player " + (j + 1) + " Score: " + GameManager.i.score[j];
-            }
-            else
-            {
-                scoreText[j].text = "";
-            }
+            scoreText[0].text = "";
         }
 
         

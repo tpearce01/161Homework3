@@ -2,8 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*********************************************************************************
+ * class FusedUnit : Unit
+ * 
+ * Function: DEPRECATED CLASS. This class is meant for multiplayer functionality
+ *      which is not present in this version. Extends unit functionality to 
+ *      respawn players when destroyed
+ *********************************************************************************/
 public class FusedUnit : Unit {
 
+    /*
 	public override void OnKill(){
 		List<GameObject> players = GameManager.i.GetPlayers();
 		//Instantiate player1, player2
@@ -14,4 +22,5 @@ public class FusedUnit : Unit {
 		Level.i.fusedHealth = 0;
 		Level.i.fused = false;
 	}
+    */
 }

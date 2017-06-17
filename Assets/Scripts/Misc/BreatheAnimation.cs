@@ -5,16 +5,24 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
+/*********************************************************************************
+ * class Spawner
+ * 
+ * Function: Handles the spawning of all obejcts
+ *********************************************************************************/
 public class BreatheAnimation : MonoBehaviour
 {
-    public List<GameObject> obj;
+    public List<GameObject> obj;    //List of objects to perform "breathing" animation on
 
-	// Update is called once per frame
+	// Update the animation
 	void Update ()
 	{
 	    BreateAnimation();
 	}
 
+    /// <summary>
+    /// Change objects size based on time to create a "breathing" effect
+    /// </summary>
     public void BreateAnimation()
     {
         if (obj.Count > 0)
@@ -33,17 +41,28 @@ public class BreatheAnimation : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Set a list of objects to begin "breathing"
+    /// </summary>
+    /// <param name="o"></param>
     public void SetObjList(List<GameObject> o)
     {
         ResetObjScale();
         obj = o;
     }
 
+    /// <summary>
+    /// Add a single object to begin "breathing"
+    /// </summary>
+    /// <param name="o"></param>
     public void AddObj(GameObject o)
     {
         obj.Add(o);
     }
 
+    /// <summary>
+    /// Reset all object scales
+    /// </summary>
     public void ResetObjScale()
     {
         foreach (var o in obj)
@@ -52,6 +71,10 @@ public class BreatheAnimation : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Reset a single object's scale
+    /// </summary>
+    /// <param name="o"></param>
     public void ResetObjScale(GameObject o)
     {
 
@@ -64,6 +87,10 @@ public class BreatheAnimation : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Remove a single object
+    /// </summary>
+    /// <param name="o"></param>
     public void RemoveObj(GameObject o)
     {
         obj.Remove(o);

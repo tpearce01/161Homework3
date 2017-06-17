@@ -2,10 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*********************************************************************************
+ * class EnemyProjectile : Projectile
+ * 
+ * Function: Extend projectile functionality to move left and damage players
+ *********************************************************************************/
 public class EnemyProjectile : Projectile
 {
 
-    //Move bullet
+    /// <summary>
+    /// Move the bullet to the left
+    /// </summary>
     protected override void Move()
     {
 		gameObject.transform.position -= transform.right * speed * Time.deltaTime;

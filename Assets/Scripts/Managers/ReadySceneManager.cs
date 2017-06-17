@@ -4,29 +4,27 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/*********************************************************************************
+ * class ReadySceneManager
+ * 
+ * Function: Handles all functionalities of the Ready scene. The Ready scene 
+ *      determines when the player should enter the game
+ *********************************************************************************/
 public class ReadySceneManager : MonoBehaviour
 {
-    public BreatheAnimation ba;
-    public Text[] t;
-	public string sceneToLoad;
+    public BreatheAnimation ba; //Allows for "breathing" animation to play on objects
+    public Text[] t;            //Ready up text
+	public string sceneToLoad;  //Next scene to load
 	
-	// Update is called once per frame
+	// Handles user input
 	void Update () {
 	    if (Input.GetButtonDown("Start1"))
 	    {
 	        POneReady();
 	    }
-	    if (Input.GetButtonDown("Start2"))
-	    {
-	        PTwoReady();
-	    }
 	    if (Input.GetButtonDown("B1"))
 	    {
 	        POneNotReady();
-	    }
-	    if (Input.GetButtonDown("B2"))
-	    {
-	        PTwoNotReady();
 	    }
 	    if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
 	    {
@@ -34,24 +32,21 @@ public class ReadySceneManager : MonoBehaviour
         }
 	}
 
+    /// <summary>
+    /// Sets player one to ready
+    /// </summary>
     public void POneReady()
     {
         CheckStart();
-        GameManager.i.ReadyUp(0);
+        GameManager.i.ReadyUp();
         ba.RemoveObj(t[0].gameObject);
         t[0].text = "Player 1 Ready!";
         t[0].color = Color.black;
     }
 
-    public void PTwoReady()
-    {
-        CheckStart();
-        GameManager.i.ReadyUp(1);
-        ba.RemoveObj(t[1].gameObject);
-        t[1].text = "Player 2 Ready!";
-        t[1].color = Color.black;
-    }
-
+    /// <summary>
+    /// Sets player one to not ready
+    /// </summary>
     public void POneNotReady()
     {
         GameManager.i.NotReady(0);
@@ -60,22 +55,14 @@ public class ReadySceneManager : MonoBehaviour
         t[0].color = Color.red;
     }
 
-    public void PTwoNotReady()
-    {
-        GameManager.i.NotReady(1);
-        ba.AddObj(t[1].gameObject);
-        t[1].text = "Player 2 Press Start";
-        t[1].color = Color.red;
-    }
-
+    /// <summary>
+    /// Check if the next scene should be loaded
+    /// </summary>
     public void CheckStart()
     {
-        foreach (bool b in GameManager.i.GetReady())
+        if (GameManager.i.GetReady())
         {
-            if (b)
-            {
-                SceneManager.LoadScene(sceneToLoad);
-            }
+            SceneManager.LoadScene(sceneToLoad);
         }
     }
 }

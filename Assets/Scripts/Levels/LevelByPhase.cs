@@ -2,6 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*********************************************************************************
+ * class levelByPhase : Level
+ * 
+ * Function: Determines what happens in each phase of a level. Controls enemy
+ *      spawns and types, time between each spawn, boss to spawn, and audio 
+ *      to play for the level.
+ *********************************************************************************/
 public class LevelByPhase : Level {
 	public float startDelay;	//Delay before starting spawns
 	public List<Phase> phases;	//Details of each phase
@@ -9,10 +16,13 @@ public class LevelByPhase : Level {
 	int spawned;				//Enemies spawned in current phase
 	float timer;				//Time until next spawn
 	public GameObject boss;		//Boss prefab. Every level must have a boss
-	public Vector3 bossLocation;
-	bool bossSpawned;
-    public Sound audioToPlay;
+    public Vector3 bossLocation;//Location to spawn boss
+	bool bossSpawned;           //Determines if the boss has spawned
+    public Sound audioToPlay;   //Background music to be played
 
+    /// <summary>
+    /// Start timer for spawning enemies and begin background music
+    /// </summary>
 	public override void InitializeLevel (){
 		timer = startDelay;
 	    if (audioToPlay != null)
@@ -21,6 +31,9 @@ public class LevelByPhase : Level {
 	    }
 	}
 
+    /// <summary>
+    /// Controls all spawning and related timers.
+    /// </summary>
 	public override void UpdateLevel(){
 		//Check all phases
 		for (int i = 0; i < phases.Count; i++) {
@@ -51,7 +64,9 @@ public class LevelByPhase : Level {
 		}
 	}
 
-	//Initialize phase vars to default
+	/// <summary>
+    /// Increment phase and reset spawn counter
+    /// </summary>
 	void NextPhase(){
 		phaseNumber++;
 		spawned = 0;

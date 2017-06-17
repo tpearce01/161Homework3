@@ -4,16 +4,22 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
+/*********************************************************************************
+ * class MainMenuManager
+ * 
+ * Function: Controls all main menu functionality
+ *********************************************************************************/
 public class MainMenuManager : MonoBehaviour {
 
-	public GameObject loadPanel;
-	public List<GameObject> buttons;
-	public GameObject currentButton;
-	public BreatheAnimation ba;
+	public GameObject loadPanel;        //Loading screen object
+	public List<GameObject> buttons;    //List of all buttons in the scene
+	public GameObject currentButton;    //Currently selected button
+	public BreatheAnimation ba;         //Allows a "breathing" animation to play on objects
+	int currentChoice;                  //Index of currently selected button
+	bool inputReceived;                 //Determines if user has given input. Used to prevent 
+                                        //input from firing events too quickly
 
-	int currentChoice;
-	bool inputReceived;
-
+    //Play main menu background music and set first button as currently selected button
 	void Start(){
 		SoundManager.i.PlaySoundLoop (Sound.MainMenuAudio, SoundManager.i.volume);
 		ba.AddObj (buttons[currentChoice]);
@@ -21,10 +27,16 @@ public class MainMenuManager : MonoBehaviour {
 		currentButton.GetComponent<Image> ().color = Color.green;
 	}
 
+    /// <summary>
+    /// Check for user input. Can either select a new button, or load a scene based on the currently selected button
+    /// </summary>
 	void Update(){
+        //Handle confirm input
 		if (Input.GetButtonDown ("Start1") || Input.GetButtonDown("Start2") || Input.GetButtonDown("A1") || Input.GetButtonDown("A2") || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return)) {
 			LoadScene ();
 		}
+
+        //Handle movement input
 		if ((Input.GetAxis("LSY1") > .2f || Input.GetAxis("LSY2") > .2f || Input.GetKeyDown(KeyCode.S))) {
 		    if (!inputReceived)
 		    {
@@ -52,10 +64,17 @@ public class MainMenuManager : MonoBehaviour {
 		}
 	}
 
+    /// <summary>
+    /// Quits the application
+    /// </summary>
 	public void QuitButton(){
 		Application.Quit();
 	}
 
+    /// <summary>
+    /// Loads the specified scene.
+    /// </summary>
+    /// <param name="scene"></param>
 	public void LoadScene(string scene){
 		if (loadPanel != null) {
 			loadPanel.SetActive (true);
@@ -63,6 +82,9 @@ public class MainMenuManager : MonoBehaviour {
 		SceneManager.LoadScene (scene);
 	}
 
+    /// <summary>
+    /// Determines which scene to load
+    /// </summary>
 	void LoadScene(){
 		switch (currentChoice) {
 		case 0:
@@ -79,6 +101,10 @@ public class MainMenuManager : MonoBehaviour {
 		}
 	}
 
+    /// <summary>
+    /// Changes the visual representation of the currently selected button
+    /// </summary>
+    /// <param name="newButton"></param>
 	private void ChangeSelectedButtonVisual(GameObject newButton)
 	{
 		currentButton.GetComponent<Image> ().color = Color.white;

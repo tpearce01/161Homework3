@@ -5,35 +5,42 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/*********************************************************************************
+ * class StorySceneManager
+ * 
+ * Function: Handles all Story scene functionalities
+ *********************************************************************************/
 public class StorySceneManager : MonoBehaviour
 {
-    public Sprite background;
-    public Sound backgroundMusic;
+    public Sprite background;                                   //Background image
+    public Sound backgroundMusic;                               //Background music
 
-    public StoryCharacter[] characters = new StoryCharacter[2];
-    public List<Chat> conversation = new List<Chat>();
-    private int currentChat;
-    private Text storyText;
+    public StoryCharacter[] characters = new StoryCharacter[2]; //Characters in this story scene
+    public List<Chat> conversation = new List<Chat>();          //Chat log of the characters conversation
+    private int currentChat;                                    //Current index of the chat log (conversation)
+    private Text storyText;                                     //Currently displayed text
 
-    private Image leftSpeaker;
-    private Image rightSpeaker;
+    private Image leftSpeaker;                                  //Left character image
+    private Image rightSpeaker;                                 //Right character image
 
-    public string sceneToLoad;
+    public string sceneToLoad;                                  //Next scene to load
 
+    //Set character images, background, and music
     void Start()
     {
-        leftSpeaker = gameObject.transform.FindChild("LeftSpeaker").GetComponent<Image>();
+        leftSpeaker = gameObject.transform.Find("LeftSpeaker").GetComponent<Image>();
         leftSpeaker.sprite = characters[0].characterImage;
         leftSpeaker.preserveAspect = true;
-        rightSpeaker = gameObject.transform.FindChild("RightSpeaker").GetComponent<Image>();
+        rightSpeaker = gameObject.transform.Find("RightSpeaker").GetComponent<Image>();
         rightSpeaker.sprite = characters[1].characterImage;
         rightSpeaker.preserveAspect = true;
-        gameObject.transform.FindChild("Background").GetComponent<Image>().sprite = background;
-        storyText = gameObject.transform.FindChild("StoryText").GetComponent<Text>();
+        gameObject.transform.Find("Background").GetComponent<Image>().sprite = background;
+        storyText = gameObject.transform.Find("StoryText").GetComponent<Text>();
         SoundManager.i.PlaySoundLoop(backgroundMusic, SoundManager.i.volume);
         NextChat();
     }
 
+    //Check for user input for the next chat log
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Mouse0)
@@ -45,6 +52,9 @@ public class StorySceneManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Display the next chat log and highlight the speaking character
+    /// </summary>
     void NextChat()
     {
         if (currentChat >= conversation.Count)
@@ -71,6 +81,9 @@ public class StorySceneManager : MonoBehaviour
         currentChat++;
     }
 
+    /// <summary>
+    /// Load the next scene
+    /// </summary>
     void NextScene()
     {
         SoundManager.i.EndAllSound();

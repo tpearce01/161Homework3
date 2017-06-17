@@ -3,26 +3,38 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*********************************************************************************
+ * class Unit
+ * 
+ * Function: Parent class to all generic units. A unit must have health and a 
+ *      health slider.
+ *********************************************************************************/
 public class Unit : MonoBehaviour
 {
-    public Slider healthSlider;
-    public Image healthSliderFill;
-    public float maxHealth;
-	public float health;
-	public float damageModifier = 1;
-    private bool immortal;
+    public Slider healthSlider;         //Slider object to display health value
+    public Image healthSliderFill;      //Used to control color of the health bar
+    public float maxHealth;             //Maximum health
+	public float health;                //Current health
+	public float damageModifier = 1;    //Incoming damage modifier
+    private bool immortal;              //Determines if the unit can be damaged
 
+    //Initialize health and set health slider
     void Awake()
     {
         health = maxHealth;
         ModifyHealth(0);
     }
 
-    //Modify unit health and update slider value / color
+    /// <summary>
+    /// Modify unit health and visually update health slider. Green is full, red is empty. 
+    /// Triggers kill() function
+    /// </summary>
+    /// <param name="value"></param>
     public void ModifyHealth(float value)
     {
         if (!immortal)
         {
+            //Modify health value
             health += value*damageModifier;
             if (health >= maxHealth)
             {
@@ -31,7 +43,7 @@ public class Unit : MonoBehaviour
 
             healthSlider.value = health/maxHealth;
 
-            //Color-Based health feedback
+            //Update slider color depending on health value
             if (healthSlider.value > .50f)
             {
                 healthSliderFill.color = Color.Lerp(Color.yellow, Color.green, (healthSlider.value*2) - 1);
@@ -49,7 +61,9 @@ public class Unit : MonoBehaviour
         }
     }
 
-    //Destroy the unit
+    /// <summary>
+    /// Destroy the unit
+    /// </summary>
     public void Kill()
     {
         //SoundManager.i.PlaySound(Sound.Explosion0, 0.5f);
@@ -62,17 +76,28 @@ public class Unit : MonoBehaviour
         Destroy(gameObject);
     }
 
+    /// <summary>
+    /// Allows for custom functionality when killed
+    /// </summary>
     public virtual void OnKill()
     {
         //Specialized kill function
     }
 
-
+    /// <summary>
+    /// Prevents a unit from taking damage for a duration
+    /// </summary>
+    /// <param name="duration"></param>
     public void SetImmortal(float duration)
     {
         StartCoroutine(Immortal(duration));
     }
 
+    /// <summary>
+    /// Prevents a unit from taking damage for a duration
+    /// </summary>
+    /// <param name="duration"></param>
+    /// <returns></returns>
     public IEnumerator Immortal(float duration)
     {
         immortal = true;
